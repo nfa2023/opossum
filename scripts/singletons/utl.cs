@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Godot;
 
-public partial class utl : Node
+public partial class Utl : Node
 {
     public const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 
@@ -25,56 +25,58 @@ public partial class utl : Node
 
     public static Viewport VP;
 
-    public static readonly string _50 = "50";
+    public static readonly string EN_STR = "en";
+
+    public static readonly string PCT_FRMT = "{0}%";
+    public static readonly string FIFTY = "50";
+    public static readonly string TEN = "10";
+    public static readonly string _75_PCT = "75%";
     public static readonly string _100_PCT = "100%";
-    public static readonly string _10 = "10";
+    public static readonly string _150_PCT = "150%";
 
     public const int CLR_MIN = 0;   public const int CLR_MAX = 8;
     public const int BLACK = 0;     public const int WHITE = 1;
     public const int RED = 2;       public const int GREEN = 3;
     public const int BLUE = 4;      public const int CYAN = 5;
     public const int MAGENTA = 6;   public const int YELLOW = 7;
-    public static readonly Color[] Clrs = new Color[CLR_MAX] 
-    { 
-        shdr.BLACK,     shdr.WHITE,     shdr.RED,       shdr.GREEN, 
-        shdr.BLUE,      shdr.CYAN,      shdr.MAGENTA,   shdr.YELLOW 
+    public static readonly Color[] Clrs = new Color[CLR_MAX]
+    {
+        shdr.BLACK,     shdr.WHITE,     shdr.RED,       shdr.GREEN,
+        shdr.BLUE,      shdr.CYAN,      shdr.MAGENTA,   shdr.YELLOW
     };
 
     public static string i2sPercent(int number)
     {
-        if(number == 150) { return "150%"; }
-        if(number == 100) { return "100%"; }
-        if(number == 75) { return "75%"; }
-        return string.Concat(str.i2s(number), '%');
+        if(number == 150) { return _150_PCT; }
+        if(number == 100) { return _100_PCT; }
+        if(number == 75) { return _75_PCT; }
+        return string.Format(PCT_FRMT, Str.i2s(number));
     }
 
     [MethodImpl(INLINE)]
-    public float NORM2VP_X(float x) { return x * INV_VP_SZ.X; }
-
-    [MethodImpl(INLINE)]
-    public float NORM2VP_Y(float y) { return y * INV_VP_SZ.Y; }
-
-    [MethodImpl(INLINE)]
-    public Vector2 NORM2VP(in Vector2 v) { return v * INV_VP_SZ; }
+    public static Vector2 NORM2VP(in Vector2 v) { return v * INV_VP_SZ; }
 
     [MethodImpl(INLINE)]
     public static void UpdateGameWin()
     {
-        float winAspect = WIN.X / WIN.Y;
-        float gmeAspect = GAME_WIN.X / GAME_WIN.Y;
+        Vector2 win = new(WIN.X, WIN.Y);
+        Vector2 gameWin = new(GAME_WIN.X, GAME_WIN.Y);
 
         Vector2 scaledWin;
-        if(winAspect > gmeAspect)
+
+        if(win.Aspect() > gameWin.Aspect())
         {
-            float scaledX = (float)WIN.Y / (float)GAME_WIN.Y;
-            scaledWin.X = GAME_WIN.X * scaledX;
-            scaledWin.Y = WIN.Y;
+            float scaledX = win.Y / gameWin.Y;
+            scaledWin.X = gameWin.X * scaledX;
+
+            scaledWin.Y = win.Y;
         }
         else
         {
-            scaledWin.X = WIN.X;
-            float scaledY = (float)WIN.X / (float)GAME_WIN.X;
-            scaledWin.Y = GAME_WIN.Y * scaledY;
+            scaledWin.X = win.X;
+            float scaledY = win.X / gameWin.X;
+
+            scaledWin.Y = gameWin.Y * scaledY;
         }
 
         GAME_WIN = (Vector2I)scaledWin;

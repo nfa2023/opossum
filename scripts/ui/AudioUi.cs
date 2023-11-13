@@ -1,47 +1,43 @@
 using Godot;
 
-public partial class sndUi : Node
+public partial class AudioUi : Node
 {
-	public const int SND_CT = 5;
+    #region Const/Readonly Vars
+
+    public const int SND_CT = 5;
     public const int VOL_MAX = 100;
 	public const int VOL_MIN = 0;
     public const int BASE_VOL = 50;
-    public const int MASTER = (int)SND.MASTER;
-    public const int EFFECTS = (int)SND.EFFECTS;
-    public const int AMBIENCE = (int)SND.AMBIENCE;
-    public const int MUSIC = (int)SND.MUSIC;
-    public const int TTS = (int)SND.TTS;
+    public const int MASTER = (int)AudioType.MASTER;
+    public const int EFFECTS = (int)AudioType.EFFECTS;
+    public const int AMBIENCE = (int)AudioType.AMBIENCE;
+    public const int MUSIC = (int)AudioType.MUSIC;
+    public const int TTS = (int)AudioType.TTS;
 	public int[] LnrSndVols = new int[SND_CT];
 	public int[] SndState = new int[SND_CT];
+
+    #endregion
+
+    #region Exposed Objects
 
     [Export] public AspectRatioContainer SndOpts;
 	[Export] public TextureButton SndOptsBtn;
     [Export] public TextureButton ResetSndBtn;
 	[Export] public TextureButton Ret2OptsBtn;
 
-    /*
-	// There is a bug in Godot that prevents these arrays from being populated
-	// in the editor. It is scheduled to be fixed but further down the line.
-	// Kill me.
-
-	// Here lies a better idea:
-    public int[] SndState = new int[SND_CT];
-	[Export] public Button[] SndIncs = new Button[SND_CT];
-	[Export] public Button[] SndDecs = new Button[SND_CT];
-    [Export] public Label[] SndVolTxts = new Label[SND_CT];
-	*/
-
-    [Export] public TextureButton MasterInc;	[Export] public TextureButton MasterDec;	
-    [Export] public TextureButton EffectsInc;	[Export] public TextureButton EffectsDec;	
-    [Export] public TextureButton AmbienceInc;  [Export] public TextureButton AmbienceDec; 
+    [Export] public TextureButton MasterInc;	[Export] public TextureButton MasterDec;
+    [Export] public TextureButton EffectsInc;	[Export] public TextureButton EffectsDec;
+    [Export] public TextureButton AmbienceInc;  [Export] public TextureButton AmbienceDec;
     [Export] public TextureButton MusicInc;	    [Export] public TextureButton MusicDec;
     [Export] public TextureButton TtsInc;	    [Export] public TextureButton TtsDec;
 
-    [Export] public Label MasterLabel;		
-    [Export] public Label EffectsLabel;		
-    [Export] public Label AmbienceLabel;	
-    [Export] public Label MusicLabel;		
-    [Export] public Label TtsLabel;		
+    [Export] public Label MasterLabel;
+    [Export] public Label EffectsLabel;
+    [Export] public Label AmbienceLabel;
+    [Export] public Label MusicLabel;
+    [Export] public Label TtsLabel;
+
+    #endregion
 
     public void ShowSnd()
 	{
@@ -63,6 +59,7 @@ public partial class sndUi : Node
         if (saveSndOpts) { SetVols2Snd(); }
 
         mgt.opts.OptsMenu.Visible = true;
+
         SndOpts.Visible = false;
     }
 
@@ -75,17 +72,18 @@ public partial class sndUi : Node
         mgt.snd.TTS = LnrSndVols[TTS] * 0.01f;
 
         mgt.snd.SetVols2Bus();
+        NFA.Accessibility.TTS.UpdateVolume();
     }
 
-	public Label GetVolLabel(SND sndType)
+	public Label GetVolLabel(AudioType sndType)
 	{
 		switch (sndType)
 		{
-			case SND.MASTER: return MasterLabel;
-			case SND.EFFECTS: return EffectsLabel;
-			case SND.AMBIENCE: return AmbienceLabel;
-			case SND.MUSIC: return MusicLabel;
-			case SND.TTS: return TtsLabel;
+			case AudioType.MASTER: return MasterLabel;
+			case AudioType.EFFECTS: return EffectsLabel;
+			case AudioType.AMBIENCE: return AmbienceLabel;
+			case AudioType.MUSIC: return MusicLabel;
+			case AudioType.TTS: return TtsLabel;
 			default: return null;
 		}
 	}
@@ -96,7 +94,7 @@ public partial class sndUi : Node
 
         int newVol = mth.Cap(LnrSndVols[sndType] + 5, VOL_MAX);
         LnrSndVols[sndType] = newVol;
-        GetVolLabel((SND)sndType).Text = str.i2s(LnrSndVols[sndType]);
+        GetVolLabel((AudioType)sndType).Text = Str.i2s(LnrSndVols[sndType]);
         ++SndState[sndType];
     }
 
@@ -105,7 +103,7 @@ public partial class sndUi : Node
         if (LnrSndVols[sndType] == VOL_MIN) { return; }
 
         LnrSndVols[sndType] = mth.Plug(LnrSndVols[sndType] - 5, VOL_MIN);
-        GetVolLabel((SND)sndType).Text = str.i2s(LnrSndVols[sndType]);
+        GetVolLabel((AudioType)sndType).Text = Str.i2s(LnrSndVols[sndType]);
         --SndState[sndType];
     }
 
@@ -119,11 +117,11 @@ public partial class sndUi : Node
 
         SetVols2Snd();
 
-        MasterLabel.Text = utl._50;
-        EffectsLabel.Text = utl._50;
-        AmbienceLabel.Text = utl._50;
-        MusicLabel.Text = utl._50;
-        TtsLabel.Text = utl._50;
+        MasterLabel.Text = Utl.FIFTY;
+        EffectsLabel.Text = Utl.FIFTY;
+        AmbienceLabel.Text = Utl.FIFTY;
+        MusicLabel.Text = Utl.FIFTY;
+        TtsLabel.Text = Utl.FIFTY;
     }
 
     public void InitBaseVols()
@@ -134,11 +132,11 @@ public partial class sndUi : Node
         LnrSndVols[MUSIC] = BASE_VOL;
         LnrSndVols[TTS] = BASE_VOL;
 
-        MasterLabel.Text = utl._50;
-        EffectsLabel.Text = utl._50;
-        AmbienceLabel.Text = utl._50;
-        MusicLabel.Text = utl._50;
-        TtsLabel.Text = utl._50;
+        MasterLabel.Text = Utl.FIFTY;
+        EffectsLabel.Text = Utl.FIFTY;
+        AmbienceLabel.Text = Utl.FIFTY;
+        MusicLabel.Text = Utl.FIFTY;
+        TtsLabel.Text = Utl.FIFTY;
     }
 
     public override void _Ready()

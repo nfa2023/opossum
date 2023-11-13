@@ -5,7 +5,7 @@
 
 [resource]
 shader = ExtResource("1_vo42u")
-shader_parameter/strength = 0.15
-shader_parameter/white_level = 1.0
+shader_parameter/strength = 0.2
+shader_parameter/white_level = 0.85
 shader_parameter/min_grain = 0.25
 shader_parameter/BLUE_NOISE = ExtResource("2_655ep")

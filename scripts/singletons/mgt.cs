@@ -4,12 +4,12 @@ using System;
 public partial class mgt : Node
 {
     public static gme gme;
-    public static utl utl;
-    public static snd snd;
+    public static Utl utl;
+    public static Audio snd;
     public static acc acc;
     public static opts opts;
     public static ui ui;
-    
+
     public static void InitGameMgt(in Node gmeNode)
 	{
         if (gmeNode == null)

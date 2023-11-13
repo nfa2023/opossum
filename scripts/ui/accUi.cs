@@ -2,16 +2,18 @@ using Godot;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 
+using NFA.Accessibility;
+
 [StructLayout(LayoutKind.Sequential)]
 public struct SaveAccTxt
 {
-    private int full_0;
+    private readonly int full_0;
     public BOOL SaveFontSize;
     public BOOL SaveFontColor;
     public BOOL SaveOutlineSize;
     public BOOL SaveOutlineColor;
 
-    private int full_1;
+    private readonly int full_1;
     public BOOL SaveFont;
 
     public BOOL SaveTts;
@@ -35,7 +37,7 @@ public struct SaveAccTxt
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool UpdateTextAccessibility()
+    public readonly bool UpdateTextAccessibility()
     {
         return SaveFontSize == BOOL.TRUE ||
                 SaveFontColor == BOOL.TRUE ||
@@ -45,10 +47,10 @@ public struct SaveAccTxt
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool UpdateTts()
+    public readonly bool UpdateTts()
     {
-        return  SaveTts == BOOL.TRUE || 
-                SaveTtsRate == BOOL.TRUE || 
+        return  SaveTts == BOOL.TRUE ||
+                SaveTtsRate == BOOL.TRUE ||
                 SaveTtsVoice == BOOL.TRUE;
     }
 }
@@ -65,8 +67,8 @@ public unsafe partial class accUi : Node
     public const int _75_PCT = 0;       public const int _1OO_PCT_IDX = 1; public const int _15O_PCT = 2;
 
     public bool usingDyslexicFont;
-    public int FontSz = _1OO_PCT_IDX;       public int FontClr = utl.WHITE;
-    public int OutlineSz = _1OO_PCT_IDX;    public int OutlineClr = utl.BLACK;
+    public int FontSz = _1OO_PCT_IDX;       public int FontClr = Utl.WHITE;
+    public int OutlineSz = _1OO_PCT_IDX;    public int OutlineClr = Utl.BLACK;
 
     public Theme testTxtTheme;
     public Theme baseTxtTheme;
@@ -109,13 +111,17 @@ public unsafe partial class accUi : Node
 
     #region Text-to-Speech
 
-    public void TestTts() { mgt.acc.TtsSpeak(TTS_TEST_STR); }
+    public static void TestTts() { TTS.ForceSpeak(TTS_TEST_STR); }
 
-    public void TogTts() 
+    public void TogTts()
     {
+        if (TTS.usable == false) { return; }
+
         bool ttsEnabled = TtsCheck.ButtonPressed;
         TtsState += ttsEnabled ? 1 : -1;
-        mgt.acc.UpdateTts(ttsEnabled);
+
+        if(ttsEnabled) { TTS.Enable(); }
+        else { TTS.Disable(); }
     }
 
     public void DecTtsRate()
@@ -124,9 +130,9 @@ public unsafe partial class accUi : Node
 
         --TtsRateState;
         TtsRate = mth.Plug(TtsRate - 2, RATE_MIN);
-        
-        TtsRateVal.Text = str.i2s(TtsRate);
-        mgt.acc.ttsRate = TtsRate * 0.1f;
+
+        TtsRateVal.Text = Str.i2s(TtsRate);
+        TTS.rate = TtsRate * 0.1f;
     }
 
     public void IncTtsRate()
@@ -136,20 +142,20 @@ public unsafe partial class accUi : Node
         ++TtsRateState;
         TtsRate = mth.Cap(TtsRate + 2, RATE_MAX);
 
-        TtsRateVal.Text = str.i2s(TtsRate);
-        mgt.acc.ttsRate = TtsRate * 0.1f;
+        TtsRateVal.Text = Str.i2s(TtsRate);
+        TTS.rate = TtsRate * 0.1f;
     }
 
     public void IncVoice()
     {
-        int voiceCt = mgt.acc.VOICE_ID_CT - 1;
+        int voiceCt = TTS.VOICE_CT - 1;
         if (TtsVoice == voiceCt) { return; }
 
         TtsVoice = mth.Cap(TtsVoice + 1, voiceCt);
         ++TtsVoiceState;
 
-        TtsVoiceLabel.Text = mgt.acc.TTS_VOICE_NAMES[TtsVoice];
-        mgt.acc.UpdateCurrVoiceId(TtsVoice);
+        TtsVoiceLabel.Text = TTS.VOICE_NAMES[TtsVoice];
+        TTS.UpdateCurrVoiceId(TtsVoice);
     }
 
     public void DecVoice()
@@ -159,8 +165,8 @@ public unsafe partial class accUi : Node
         TtsVoice = mth.Plug(TtsVoice - 1, 0);
         --TtsVoiceState;
 
-        TtsVoiceLabel.Text = mgt.acc.TTS_VOICE_NAMES[TtsVoice];
-        mgt.acc.UpdateCurrVoiceId(TtsVoice);
+        TtsVoiceLabel.Text = TTS.VOICE_NAMES[TtsVoice];
+        TTS.UpdateCurrVoiceId(TtsVoice);
     }
 
     public void UpdateTts(in SaveAccTxt sat)
@@ -169,14 +175,14 @@ public unsafe partial class accUi : Node
         {
         }
 
-        if (sat.SaveTtsRate == BOOL.TRUE) 
-        { 
-        
+        if (sat.SaveTtsRate == BOOL.TRUE)
+        {
+
         }
 
         if (sat.SaveTtsVoice == BOOL.TRUE)
         {
-            mgt.acc.CurrTtsVoiceId = mgt.acc.TTS_VOICE_IDXS[TtsVoice];
+            TTS.currVoiceId = TTS.VOICE_IDS[TtsVoice];
         }
     }
 
@@ -201,7 +207,7 @@ public unsafe partial class accUi : Node
 
     public void UpdateTestTxtClr()
     {
-        testTxtTheme.Set(shdr.FONT_COLOR, utl.Clrs[FontClr]);
+        testTxtTheme.Set(shdr.FONT_COLOR, Utl.Clrs[FontClr]);
     }
 
     public void UpdateTestTxtSize()
@@ -218,13 +224,13 @@ public unsafe partial class accUi : Node
 
     public void UpdateTestOutlineClr()
     {
-        testTxtTheme.Set(shdr.OUTLINE_COLOR, utl.Clrs[OutlineClr]);
-        testTxtTheme.Set(shdr.OUTLINE_SHADOW_COLOR, utl.Clrs[OutlineClr]);
+        testTxtTheme.Set(shdr.OUTLINE_COLOR, Utl.Clrs[OutlineClr]);
+        testTxtTheme.Set(shdr.OUTLINE_SHADOW_COLOR, Utl.Clrs[OutlineClr]);
     }
 
     public void UpdateTestTxt()
     {
-        testTxtTheme.Set(shdr.FONT_COLOR, utl.Clrs[FontClr]);
+        testTxtTheme.Set(shdr.FONT_COLOR, Utl.Clrs[FontClr]);
 
         int* FontSizes = stackalloc int[SZ_PCT_MAX] { 27, 36, 54 };
         testTxtTheme.Set(shdr.FONT_SIZE, FontSizes[FontSz]);
@@ -232,17 +238,17 @@ public unsafe partial class accUi : Node
         int* OutlineSizes = stackalloc int[SZ_PCT_MAX] { 2, 5, 15 };
         testTxtTheme.Set(shdr.OUTLINE_SHADOW_SIZE, OutlineSizes[OutlineSz]);
 
-        testTxtTheme.Set(shdr.OUTLINE_COLOR, utl.Clrs[OutlineClr]);
-        testTxtTheme.Set(shdr.OUTLINE_SHADOW_COLOR, utl.Clrs[OutlineClr]);
+        testTxtTheme.Set(shdr.OUTLINE_COLOR, Utl.Clrs[OutlineClr]);
+        testTxtTheme.Set(shdr.OUTLINE_SHADOW_COLOR, Utl.Clrs[OutlineClr]);
 
         testTxtTheme.Set(shdr.FONT, mgt.acc.useDyslexicFont ? DyslexicFont : BaseFont);
     }
 
     public void IncOutlineClr()
     {
-        if (++OutlineClr > utl.YELLOW) { OutlineClr -= utl.CLR_MAX; }
+        if (++OutlineClr > Utl.YELLOW) { OutlineClr -= Utl.CLR_MAX; }
 
-        OutlineClrRect.Color = utl.Clrs[OutlineClr];
+        OutlineClrRect.Color = Utl.Clrs[OutlineClr];
         ++OutlineClrState;
 
         UpdateTestOutlineClr();
@@ -250,9 +256,9 @@ public unsafe partial class accUi : Node
 
     public void DecOutlineClr()
     {
-        if (--OutlineClr < 0) { OutlineClr += utl.CLR_MAX; }
+        if (--OutlineClr < 0) { OutlineClr += Utl.CLR_MAX; }
 
-        OutlineClrRect.Color = utl.Clrs[OutlineClr];
+        OutlineClrRect.Color = Utl.Clrs[OutlineClr];
         --OutlineClrState;
 
         UpdateTestOutlineClr();
@@ -265,7 +271,7 @@ public unsafe partial class accUi : Node
         OutlineSz = mth.Cap(OutlineSz + 1, _15O_PCT);
 
         int* PERCENTAGES = stackalloc int[SZ_PCT_MAX] { 75, 100, 150 };
-        OutlineSzVal.Text = utl.i2sPercent(PERCENTAGES[OutlineSz]);
+        OutlineSzVal.Text = Utl.i2sPercent(PERCENTAGES[OutlineSz]);
         ++OutlineSzState;
 
         UpdateTestOutlineSz();
@@ -278,7 +284,7 @@ public unsafe partial class accUi : Node
         OutlineSz = mth.Plug(OutlineSz - 1, SZ_PCT_MIN);
 
         int* PERCENTAGES = stackalloc int[SZ_PCT_MAX] { 75, 100, 150 };
-        OutlineSzVal.Text = utl.i2sPercent(PERCENTAGES[OutlineSz]);
+        OutlineSzVal.Text = Utl.i2sPercent(PERCENTAGES[OutlineSz]);
         --OutlineSzState;
 
         UpdateTestOutlineSz();
@@ -286,9 +292,9 @@ public unsafe partial class accUi : Node
 
     public void IncFontClr()
     {
-        if (++FontClr > utl.YELLOW) { FontClr -= utl.CLR_MAX; }
+        if (++FontClr > Utl.YELLOW) { FontClr -= Utl.CLR_MAX; }
 
-        FontClrRect.Color = utl.Clrs[FontClr];
+        FontClrRect.Color = Utl.Clrs[FontClr];
         ++FontClrState;
 
         UpdateTestTxtClr();
@@ -296,9 +302,9 @@ public unsafe partial class accUi : Node
 
     public void DecFontClr()
     {
-        if (--FontClr < 0) { FontClr += utl.CLR_MAX; }
+        if (--FontClr < 0) { FontClr += Utl.CLR_MAX; }
 
-        FontClrRect.Color = utl.Clrs[FontClr];
+        FontClrRect.Color = Utl.Clrs[FontClr];
         --FontClrState;
 
         UpdateTestTxtClr();
@@ -311,7 +317,7 @@ public unsafe partial class accUi : Node
         FontSz = mth.Cap(FontSz + 1, _15O_PCT);
 
         int* PERCENTAGES = stackalloc int[SZ_PCT_MAX] { 75, 100, 150 };
-        FontSzVal.Text = utl.i2sPercent(PERCENTAGES[FontSz]);
+        FontSzVal.Text = Utl.i2sPercent(PERCENTAGES[FontSz]);
         ++FontSzState;
 
         UpdateTestTxtSize();
@@ -324,14 +330,14 @@ public unsafe partial class accUi : Node
         FontSz = mth.Plug(FontSz - 1, SZ_PCT_MIN);
 
         int* PERCENTAGES = stackalloc int[SZ_PCT_MAX] { 75, 100, 150 };
-        FontSzVal.Text = utl.i2sPercent(PERCENTAGES[FontSz]);
+        FontSzVal.Text = Utl.i2sPercent(PERCENTAGES[FontSz]);
         --FontSzState;
 
         UpdateTestTxtSize();
     }
 
     public void UpdateGameTxt(in SaveAccTxt sat)
-    { 
+    {
         if (sat.SaveFontSize == BOOL.TRUE)
         {
             int* FontSizes = stackalloc int[SZ_PCT_MAX] { 27, 36, 54 };
@@ -340,13 +346,13 @@ public unsafe partial class accUi : Node
 
         if (sat.SaveFontColor == BOOL.TRUE)
         {
-            baseTxtTheme.Set(shdr.FONT_COLOR, utl.Clrs[FontClr]);
+            baseTxtTheme.Set(shdr.FONT_COLOR, Utl.Clrs[FontClr]);
         }
 
         if (sat.SaveOutlineColor == BOOL.TRUE)
         {
-            baseTxtTheme.Set(shdr.OUTLINE_COLOR, utl.Clrs[OutlineClr]);
-            baseTxtTheme.Set(shdr.OUTLINE_SHADOW_COLOR, utl.Clrs[OutlineClr]);
+            baseTxtTheme.Set(shdr.OUTLINE_COLOR, Utl.Clrs[OutlineClr]);
+            baseTxtTheme.Set(shdr.OUTLINE_SHADOW_COLOR, Utl.Clrs[OutlineClr]);
         }
 
         if (sat.SaveOutlineSize == BOOL.TRUE)
@@ -355,11 +361,11 @@ public unsafe partial class accUi : Node
             testTxtTheme.Set(shdr.OUTLINE_SHADOW_SIZE, OutlineSizes[OutlineSz]);
         }
 
-        if (sat.SaveFont == BOOL.TRUE) 
+        if (sat.SaveFont == BOOL.TRUE)
         {
-            if (mgt.acc.useDyslexicFont) 
-            { 
-                baseTxtTheme.Set(shdr.FONT, DyslexicFont); 
+            if (mgt.acc.useDyslexicFont)
+            {
+                baseTxtTheme.Set(shdr.FONT, DyslexicFont);
             }
             else { baseTxtTheme.Set(shdr.FONT, BaseFont); }
         }
@@ -376,10 +382,10 @@ public unsafe partial class accUi : Node
 
     public void HideAcc()
     {
-        SaveAccTxt s = new SaveAccTxt(  FontSzState, FontClrState, 
-                                        OutlineSzState, OutlineClrState, 
-                                        DyslexicFontState, TtsState, 
-                                        TtsRateState, TtsVoiceState);
+        SaveAccTxt s = new( FontSzState, FontClrState,
+                            OutlineSzState, OutlineClrState,
+                            DyslexicFontState, TtsState,
+                            TtsRateState, TtsVoiceState);
 
         if (s.UpdateTextAccessibility())    { UpdateGameTxt(in s); }
         if (s.UpdateTts())                  { UpdateTts(in s); }
@@ -396,20 +402,20 @@ public unsafe partial class accUi : Node
         baseTxtTheme = FontSzVal.Theme;
 
         FontSzState = FontSz - _1OO_PCT_IDX;
-        FontClrState = FontClr - utl.WHITE;
+        FontClrState = FontClr - Utl.WHITE;
         OutlineSzState = OutlineSz - _1OO_PCT_IDX;
-        OutlineClrState = OutlineClr - utl.BLACK;
+        OutlineClrState = OutlineClr - Utl.BLACK;
 
         FontSz = _1OO_PCT_IDX;
-        FontSzVal.Text = utl._100_PCT;
-        FontClr = utl.WHITE;
-        FontClrRect.Color = utl.Clrs[FontClr];
+        FontSzVal.Text = Utl._100_PCT;
+        FontClr = Utl.WHITE;
+        FontClrRect.Color = Utl.Clrs[FontClr];
 
         OutlineSz = _1OO_PCT_IDX;
-        OutlineSzVal.Text = utl._100_PCT;
-        OutlineClr = utl.BLACK;
-        OutlineClrRect.Color = utl.Clrs[OutlineClr];
-        
+        OutlineSzVal.Text = Utl._100_PCT;
+        OutlineClr = Utl.BLACK;
+        OutlineClrRect.Color = Utl.Clrs[OutlineClr];
+
         if (DyslexicCheck.ButtonPressed)
         {
             DyslexicCheck.ButtonPressed = false;
@@ -423,23 +429,31 @@ public unsafe partial class accUi : Node
 
         #region Text-to-Speech
 
-        if (TtsCheck.ButtonPressed) 
+        if (TtsCheck.ButtonPressed)
         {
             TtsCheck.ButtonPressed = false;
             --TtsState;
         }
 
-        mgt.acc.DisableTts();
+        TTS.Disable();
 
         TtsRateState = 0;
         TtsRate = BASE_RATE;
-        TtsRateVal.Text = utl._10;
-        mgt.acc.ttsRate = BASE_RATE * 0.1f;
+        TtsRateVal.Text = Utl.TEN;
+        TTS.rate = BASE_RATE * 0.1f;
 
         TtsVoice = 0;
         TtsVoiceState = 0;
-        mgt.acc.CurrTtsVoiceId = mgt.acc.TTS_VOICE_IDXS[TtsVoice];
-        TtsVoiceLabel.Text = mgt.acc.TTS_VOICE_NAMES[0];
+
+        if (TTS.usable)
+        {
+            TTS.currVoiceId = TTS.VOICE_IDS[TtsVoice];
+            TtsVoiceLabel.Text = TTS.VOICE_NAMES[0];
+        }
+        else
+        {
+            TtsVoiceLabel.Text = "N/A";
+        }
 
         #endregion
     }
@@ -448,10 +462,10 @@ public unsafe partial class accUi : Node
     {
         bool SavedOptsFound = false;
         if (SavedOptsFound) { }
-        else 
+        else
         {
-            mgt.acc.Fetch_EN_Voices();
-            Reset(); 
+            TTS.FetchVoices(Utl.EN_STR);
+            Reset();
         }
     }
 

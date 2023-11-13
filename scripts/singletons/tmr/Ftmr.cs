@@ -31,21 +31,34 @@ public unsafe static class Ftmr
         if (exeFinishedCallback) { doneCallbacks[id](); }
     }
 
-    // Evaluation function that should be called every frame in Update() 
+    // Evaluation function that should be called every frame in Update()
     // somewhere it can reliably be called first (or last).
     public static void Tick(int frameCt)
     {
-        if (activeTmrs < 1 || frameCt > 0) { return; }
+        if (activeTmrs < 1 || frameCt < 0) { return; }
 
         for (int i = 0; i < activeTmrs; ++i)
         {
             pool[i].ticksRemaining -= frameCt;
 
-            if (pool[i].ticksRemaining > FLT_EPSILON) { continue; }
+            if (pool[i].ticksRemaining > 0) { continue; }
             else
             {
+                int curr_idx = i--;
+                int top_tmr_idx = --activeTmrs;
+
+                pool[curr_idx] = pool[top_tmr_idx];
+                Action a = doneCallbacks[curr_idx];
+                doneCallbacks[curr_idx] = doneCallbacks[top_tmr_idx];
+                a.Invoke();
+                doneCallbacks[top_tmr_idx] = null;
+
+                /*
+                pool[i] = pool[--activeTmrs];
                 doneCallbacks[i]();
-                pool[i--] = pool[--activeTmrs];
+                doneCallbacks[i--] = doneCallbacks[activeTmrs];
+                doneCallbacks[activeTmrs] = null;
+                */
             }
         }
     }

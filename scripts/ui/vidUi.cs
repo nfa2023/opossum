@@ -2,7 +2,7 @@ using Godot;
 
 public partial class vidUi : Node
 {
-    public int resState = 0;    public int fullScrnState = 0; 
+    public int resState = 0;    public int fullScrnState = 0;
     public int vsyncState = 0;  public int scrnShakeState = 0;
 
     [Export] public AspectRatioContainer VidOpts;
@@ -34,7 +34,7 @@ public partial class vidUi : Node
     {
         "1024 x 768",   "1280 x 720",   "1360 x 760",
         "1366 x 768",   "1440 x 900",   "1600 x 900",
-        "1680 x 1050",  "1920 x 1080",  "2560 x 1080", 
+        "1680 x 1050",  "1920 x 1080",  "2560 x 1080",
         "2560 x 1440",  "2560 x 1600",  "3840 x 2160"
     };
     public const int RES_CT = 12;
@@ -150,7 +150,7 @@ public partial class vidUi : Node
         Ret2OptsBtn.ButtonUp += HideVid;
         ResetVidBtn.ButtonUp += Reset;
 
-        ResDec.ButtonUp += DecRes; 
+        ResDec.ButtonUp += DecRes;
         ResInc.ButtonUp += IncRes;
         FullScrnCheck.ButtonUp += TogFullScrn;
         VsyncCheck.ButtonUp += TogVysnc;

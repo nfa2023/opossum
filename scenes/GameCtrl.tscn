@@ -1,16 +1,15 @@
-[gd_scene load_steps=30 format=3 uid="uid://yr7qdd7ka8ti"]
+[gd_scene load_steps=29 format=3 uid="uid://yr7qdd7ka8ti"]
 
 [ext_resource type="Script" path="res://scripts/singletons/gme.cs" id="1_u2nxr"]
+[ext_resource type="Script" path="res://scripts/singletons/Utl.cs" id="2_3jnpj"]
 [ext_resource type="Script" path="res://scripts/singletons/acc.cs" id="2_nclxl"]
-[ext_resource type="Script" path="res://scripts/singletons/snd.cs" id="2_spp0w"]
-[ext_resource type="Script" path="res://scripts/singletons/utl.cs" id="2_uw1f7"]
+[ext_resource type="Script" path="res://scripts/singletons/Audio.cs" id="2_spp0w"]
 [ext_resource type="Script" path="res://scripts/singletons/opts.cs" id="3_0iv7y"]
 [ext_resource type="Script" path="res://scripts/singletons/ui.cs" id="6_l008w"]
-[ext_resource type="Texture2D" uid="uid://d34pdrvgxum7w" path="res://sprites/ui/TitleTesting.png" id="6_xbxgp"]
 [ext_resource type="FontFile" uid="uid://ccyhhln4lnkae" path="res://fonts/CherryBombOne-Regular.ttf" id="7_0nvyu"]
 [ext_resource type="Script" path="res://scripts/ui/menu.cs" id="8_pml2u"]
-[ext_resource type="Script" path="res://scripts/ui/sndUi.cs" id="10_5yitw"]
-[ext_resource type="Texture2D" uid="uid://bgysnmyjs8tu4" path="res://sprites/ui/DropDownPlate_RAC_2022-09-10_68cc.png" id="10_ae2wg"]
+[ext_resource type="Script" path="res://scripts/ui/AudioUi.cs" id="10_5yitw"]
+[ext_resource type="Texture2D" uid="uid://d34pdrvgxum7w" path="res://sprites/ui/TitleTesting.png" id="10_ae2wg"]
 [ext_resource type="Texture2D" uid="uid://t1llsq404xpv" path="res://sprites/ui/ButtonPH_Pressed.png" id="10_h2maf"]
 [ext_resource type="Texture2D" uid="uid://b37gineane143" path="res://sprites/ui/ButtonPH_Hover.png" id="11_gg6ve"]
 [ext_resource type="Texture2D" uid="uid://cphe2in0wh2gp" path="res://sprites/ui/ResetButton2_DIA_2022-10-22_68cc.png" id="11_srumj"]
@@ -39,7 +38,7 @@ position = Vector2(1, 0)
 script = ExtResource("1_u2nxr")
 
 [node name="utl" type="Node2D" parent="."]
-script = ExtResource("2_uw1f7")
+script = ExtResource("2_3jnpj")
 
 [node name="snd" type="Node2D" parent="."]
 script = ExtResource("2_spp0w")
@@ -85,7 +84,7 @@ alignment_vertical = 0
 
 [node name="TextureRect" type="TextureRect" parent="ui/Title"]
 layout_mode = 2
-texture = ExtResource("6_xbxgp")
+texture = ExtResource("10_ae2wg")
 expand_mode = 1
 stretch_mode = 4
 
@@ -115,7 +114,7 @@ closeCredBtn = NodePath("../../CreditsOrganizer/CreditsPanel/ReturnBtn")
 [node name="ContinueBtn" type="TextureButton" parent="ui/MenuOrganizer/MenuButtons"]
 custom_minimum_size = Vector2(160, 70)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -138,7 +137,7 @@ horizontal_alignment = 1
 [node name="NewBtn" type="TextureButton" parent="ui/MenuOrganizer/MenuButtons"]
 custom_minimum_size = Vector2(160, 70)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -161,7 +160,7 @@ horizontal_alignment = 1
 [node name="OptionsBtn" type="TextureButton" parent="ui/MenuOrganizer/MenuButtons"]
 custom_minimum_size = Vector2(160, 70)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -185,7 +184,7 @@ horizontal_alignment = 1
 [node name="CreditsBtn" type="TextureButton" parent="ui/MenuOrganizer/MenuButtons"]
 custom_minimum_size = Vector2(160, 70)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -208,7 +207,7 @@ horizontal_alignment = 1
 [node name="QuitBtn" type="TextureButton" parent="ui/MenuOrganizer/MenuButtons"]
 custom_minimum_size = Vector2(160, 70)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -260,7 +259,7 @@ alignment = 1
 [node name="VideoBtn" type="TextureButton" parent="ui/OptionsOrganizer/Options/OptionsVerticalOrganizer"]
 custom_minimum_size = Vector2(195, 85)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -283,7 +282,7 @@ horizontal_alignment = 1
 [node name="BrightnessBtn" type="TextureButton" parent="ui/OptionsOrganizer/Options/OptionsVerticalOrganizer"]
 custom_minimum_size = Vector2(195, 85)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -306,7 +305,7 @@ horizontal_alignment = 1
 [node name="SoundBtn" type="TextureButton" parent="ui/OptionsOrganizer/Options/OptionsVerticalOrganizer"]
 custom_minimum_size = Vector2(195, 85)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -329,7 +328,7 @@ horizontal_alignment = 1
 [node name="AccessibilityBtn" type="TextureButton" parent="ui/OptionsOrganizer/Options/OptionsVerticalOrganizer"]
 custom_minimum_size = Vector2(195, 85)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -352,7 +351,7 @@ horizontal_alignment = 1
 [node name="ControlsBtn" type="TextureButton" parent="ui/OptionsOrganizer/Options/OptionsVerticalOrganizer"]
 custom_minimum_size = Vector2(195, 85)
 layout_mode = 2
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -380,7 +379,7 @@ anchor_left = 0.05
 anchor_top = 0.8
 anchor_right = 0.95
 anchor_bottom = 0.95
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -448,7 +447,7 @@ anchor_left = 0.25
 anchor_top = 0.85
 anchor_right = 0.75
 anchor_bottom = 0.95
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -590,7 +589,7 @@ anchor_left = 0.675
 anchor_top = 0.05
 anchor_right = 0.975
 anchor_bottom = 0.5
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -1112,7 +1111,7 @@ anchor_left = 0.05
 anchor_top = 0.8
 anchor_right = 0.65
 anchor_bottom = 0.95
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -1816,7 +1815,7 @@ anchor_left = 0.05
 anchor_top = 0.8
 anchor_right = 0.65
 anchor_bottom = 0.95
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -2085,7 +2084,7 @@ anchor_left = 0.05
 anchor_top = 0.8
 anchor_right = 0.65
 anchor_bottom = 0.95
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")
@@ -2472,7 +2471,7 @@ anchor_left = 0.05
 anchor_top = 0.8
 anchor_right = 0.65
 anchor_bottom = 0.95
-texture_normal = ExtResource("10_ae2wg")
+texture_normal = ExtResource("23_emuil")
 texture_pressed = ExtResource("10_h2maf")
 texture_hover = ExtResource("11_gg6ve")
 texture_focused = ExtResource("11_gg6ve")

@@ -48,8 +48,8 @@ public struct SERIAL_ACCESSIBILITY
     public bool DYSLEXIC_FONT_ENABLED = true;
     public int FONT_SIZE = 36;
     public int FONT_OUTLINE_SIZE = 7;
-    public int FONT_COLOR_INDEX = utl.WHITE;
-    public int FONT_OUTLINE_COLOR_INDEX = utl.BLACK;
+    public int FONT_COLOR_INDEX = Utl.WHITE;
+    public int FONT_OUTLINE_COLOR_INDEX = Utl.BLACK;
 
     public bool TTS_ENABLED = false;
     public int TTS_RATE = 10;
@@ -61,8 +61,8 @@ public struct SERIAL_ACCESSIBILITY
         DYSLEXIC_FONT_ENABLED = true;
         FONT_SIZE = 36;
         FONT_OUTLINE_SIZE = 7;
-        FONT_COLOR_INDEX = utl.WHITE;
-        FONT_OUTLINE_COLOR_INDEX = utl.BLACK;
+        FONT_COLOR_INDEX = Utl.WHITE;
+        FONT_OUTLINE_COLOR_INDEX = Utl.BLACK;
 
         TTS_ENABLED = false;
         TTS_RATE = 10;

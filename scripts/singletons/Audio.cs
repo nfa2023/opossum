@@ -1,14 +1,14 @@
 using Godot;
 
-public enum SND { MASTER = 0, EFFECTS, AMBIENCE, MUSIC, TTS }
+public enum AudioType { MASTER = 0, EFFECTS, AMBIENCE, MUSIC, TTS }
 
-public partial class snd : Node
+public partial class Audio : Node
 {
-    public const int MASTER_IDX = (int)SND.MASTER;
-    public const int EFFECTS_IDX = (int)SND.EFFECTS;
-    public const int AMBIENCE_IDX = (int)SND.AMBIENCE;
-    public const int MUSIC_IDX = (int)SND.MUSIC;
-    public const int TTS_IDX = (int)SND.TTS;
+    public const int MASTER_IDX = (int)AudioType.MASTER;
+    public const int EFFECTS_IDX = (int)AudioType.EFFECTS;
+    public const int AMBIENCE_IDX = (int)AudioType.AMBIENCE;
+    public const int MUSIC_IDX = (int)AudioType.MUSIC;
+    public const int TTS_IDX = (int)AudioType.TTS;
 
     // NOTE(RYAN_2023-07-25): As a general rule, we're going to keep audio as
     // a linear quantity. If you want the volume in decibles, you will need to
@@ -27,35 +27,35 @@ public partial class snd : Node
         float musicVol_DB       = mth.Ln2Db(ref MUSIC);
         float ttsVol_DB         = mth.Ln2Db(ref TTS);
 
-        AudioServer.SetBusVolumeDb(MASTER_IDX,      masterVol_DB);
-        AudioServer.SetBusVolumeDb(EFFECTS_IDX,     effectsVol_DB);
-        AudioServer.SetBusVolumeDb(AMBIENCE_IDX,    ambienceVol_DB);
-        AudioServer.SetBusVolumeDb(MUSIC_IDX,       musicVol_DB);
-        AudioServer.SetBusVolumeDb(TTS_IDX,         ttsVol_DB);
+        AudioServer.SetBusVolumeDb(MASTER_IDX, masterVol_DB);
+        AudioServer.SetBusVolumeDb(EFFECTS_IDX, effectsVol_DB);
+        AudioServer.SetBusVolumeDb(AMBIENCE_IDX, ambienceVol_DB);
+        AudioServer.SetBusVolumeDb(MUSIC_IDX, musicVol_DB);
+        AudioServer.SetBusVolumeDb(TTS_IDX, ttsVol_DB);
     }
 
-    public void SetVol(SND sndType, float vol)
+    public void SetVol(AudioType sndType, float vol)
     {
         switch (sndType)
         {
-            case SND.MASTER:    MASTER = vol; return;
-            case SND.EFFECTS:   EFFECTS = vol; return;
-            case SND.AMBIENCE:  AMBIENCE = vol; return;
-            case SND.MUSIC:     MUSIC = vol; return;
-            case SND.TTS:       TTS = vol; return;
+            case AudioType.MASTER:    MASTER = vol; return;
+            case AudioType.EFFECTS:   EFFECTS = vol; return;
+            case AudioType.AMBIENCE:  AMBIENCE = vol; return;
+            case AudioType.MUSIC:     MUSIC = vol; return;
+            case AudioType.TTS:       TTS = vol; return;
             default: return;
         }
     }
 
-    public float GetVol(SND sndType)
+    public float GetVol(AudioType sndType)
     {
         switch (sndType)
         {
-            case SND.MASTER:    return MASTER;
-            case SND.EFFECTS:   return EFFECTS;
-            case SND.AMBIENCE:  return AMBIENCE;
-            case SND.MUSIC:     return MUSIC;
-            case SND.TTS:       return TTS;
+            case AudioType.MASTER:    return MASTER;
+            case AudioType.EFFECTS:   return EFFECTS;
+            case AudioType.AMBIENCE:  return AMBIENCE;
+            case AudioType.MUSIC:     return MUSIC;
+            case AudioType.TTS:       return TTS;
             default:            return -1f;
         }
     }

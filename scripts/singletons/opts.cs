@@ -32,7 +32,7 @@ public partial class opts : Node
         if(BrightVal == MAX_BRIGHTNESS) { return; }
 
         BrightVal = mth.Cap(BrightVal + 5, MAX_BRIGHTNESS);
-        BrightValTxt.Text = str.i2s(BrightVal);
+        BrightValTxt.Text = Str.i2s(BrightVal);
         ++BrightState;
     }
 
@@ -41,7 +41,7 @@ public partial class opts : Node
         if(BrightVal == MIN_BRIGHTNESS) { return; }
 
         BrightVal = mth.Plug(BrightVal - 5, MIN_BRIGHTNESS);
-        BrightValTxt.Text = str.i2s(BrightVal);
+        BrightValTxt.Text = Str.i2s(BrightVal);
         --BrightState;
     }
 
@@ -49,7 +49,7 @@ public partial class opts : Node
     {
         BrightState += BASE_BRIGHTNESS - BrightVal;
         BrightVal = BASE_BRIGHTNESS;
-        BrightValTxt.Text = utl._50;
+        BrightValTxt.Text = Utl.FIFTY;
     }
 
     public void ShowBrightness()
@@ -71,7 +71,7 @@ public partial class opts : Node
     public void InitBright()
     {
         BrightVal = BASE_BRIGHTNESS;
-        BrightValTxt.Text = utl._50;
+        BrightValTxt.Text = Utl.FIFTY;
     }
 
 	public void ShowOpts()

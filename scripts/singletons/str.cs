@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-public static class str
+public static class Str
 {
     public static string i2s(int number)
     {
@@ -111,18 +111,24 @@ public static class str
         }
     }
 
+    public static unsafe void Clr(ref char* c, int len)
+    {
+        if (len < 1) { return; }
+        while (len > 0) { c[len--] = '\0'; }
+    }
+
     // Ternary operator returning true/false prevents redundant asm generation:
     // https://github.com/dotnet/runtime/issues/4207
-    public static bool Invalid(in string s) { return (s == null || 0 == s.Length) ? true : false; }
+    public static bool Invalid(in string s) { return s == null || 0 == s.Length; }
 
     /// <summary>
     /// Returns a signed integer hash of the input string.
-    /// 
+    ///
     /// <para>***WARNING(RYAN): DO NOT USE THIS FOR CRYPTOGRAPHIC PURPOSES!***</para>
     /// </summary>
     /// <param name="s">Input string to be hashed.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static unsafe public int Hsh(in string s)
+    static unsafe public int Hash(in string s)
     {
         int h = 0;
         fixed (char* p = s)
@@ -139,12 +145,12 @@ public static class str
 
     /// <summary>
     /// Returns a signed integer hash of the input string.
-    /// 
+    ///
     /// <para>***WARNING(RYAN): DO NOT USE THIS FOR CRYPTOGRAPHIC PURPOSES!***</para>
     /// </summary>
     /// <param name="s">Input string to be hashed.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static unsafe public int Hsh(string s)
+    static unsafe public int Hash(string s)
     {
         int h = 0;
         fixed (char* p = s)

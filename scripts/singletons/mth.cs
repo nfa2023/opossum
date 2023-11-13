@@ -15,9 +15,9 @@ public static class mth
     public static int Plug(int x, int min) { return x < min ? min : x; }
 
     [MethodImpl(INLINE)]
-    public static int Clamp(int x, int min, int max) 
-    { 
-        return x < min ? min : (x > max ? max : x); 
+    public static int Clamp(int x, int min, int max)
+    {
+        return x < min ? min : (x > max ? max : x);
     }
 
     [MethodImpl(INLINE)]

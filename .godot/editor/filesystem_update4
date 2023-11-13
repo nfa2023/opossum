@@ -1,6 +1,9 @@
+res://scenes/GameCtrl.tscn
 res://dbg/scns/shader-playgrnd.tscn
 res://dbg/shdrs/vignette.tres
 res://dbg/shdrs/film_grain.gdshader
 res://dbg/shdrs/film_grain.tres
 res://dbg/shdrs/color_grade.gdshader
 res://dbg/shdrs/color_grade.tres
+res://dbg/shdrs/reel.gdshader
+res://fonts/testTxt.tres

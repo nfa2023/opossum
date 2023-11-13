@@ -15,7 +15,7 @@ public static class inp
 	public static bool UP_PRESSED = false;
 	public static bool DOWN_PRESSED = false;
 	public static bool LEFT_PRESSED = false;
-	public static bool RIGHT_PRESSED = false;	
+	public static bool RIGHT_PRESSED = false;
 	public static bool SELECT_PRESSED = false;
 	public static bool EXAMINE_PRESSED = false;
 	public static bool CANCEL_PRESSED = false;
