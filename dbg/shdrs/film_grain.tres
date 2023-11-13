@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://yd724pjub6it"]
+
+[ext_resource type="Shader" path="res://dbg/shdrs/film_grain.gdshader" id="1_vo42u"]
+[ext_resource type="Texture2D" uid="uid://c8607ch8uc4ef" path="res://dbg/img/LDR_RGBA_0.png" id="2_655ep"]
+
+[resource]
+shader = ExtResource("1_vo42u")
+shader_parameter/strength = 0.15
+shader_parameter/white_level = 1.0
+shader_parameter/min_grain = 0.25
+shader_parameter/BLUE_NOISE = ExtResource("2_655ep")

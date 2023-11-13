@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Bootstrap Boomers": {
+      "commandName": "Project"
+    },
+    "Oppossum": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\Ryan\\Desktop\\BootstrapBoomers\\Godot_v4.0.3-stable_mono_win64\\Godot_v4.0.3-stable_mono_win64.exe",
+      "commandLineArgs": "--path.--verbose",
+      "workingDirectory": ".",
+      "nativeDebugging": true
+    }
+  }
+}

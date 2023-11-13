@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=3 uid="uid://bh3bq1fpe4rlm"]
+
+[ext_resource type="Texture2D" uid="uid://d0bxiyvdlmxij" path="res://dbg/img/byodoTempleValley-Hawaii.jpg" id="1_ppikd"]
+[ext_resource type="Material" uid="uid://cp1jnfjwk2dx0" path="res://dbg/shdrs/vignette.tres" id="2_i7wap"]
+[ext_resource type="Material" uid="uid://yd724pjub6it" path="res://dbg/shdrs/film_grain.tres" id="4_dbpq2"]
+[ext_resource type="Material" uid="uid://crmr6a7xvsflh" path="res://dbg/shdrs/color_grade.tres" id="4_o1ffp"]
+[ext_resource type="Texture2D" uid="uid://cq4j188amhx3s" path="res://dbg/img/bw_gradient.png" id="5_o2p0w"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="ByodoTempleValley-hawaii" type="Sprite2D" parent="."]
+position = Vector2(678, 368)
+scale = Vector2(0.225, 0.225)
+texture = ExtResource("1_ppikd")
+
+[node name="ColorGrade" type="ColorRect" parent="ByodoTempleValley-hawaii"]
+material = ExtResource("4_o1ffp")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1769.5
+offset_top = -1368.0
+offset_right = -1769.5
+offset_bottom = -1368.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FilmGrain" type="ColorRect" parent="ByodoTempleValley-hawaii"]
+material = ExtResource("4_dbpq2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1769.5
+offset_top = -1368.0
+offset_right = -1769.5
+offset_bottom = -1368.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Vignette" type="ColorRect" parent="ByodoTempleValley-hawaii"]
+material = ExtResource("2_i7wap")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1769.5
+offset_top = -1368.0
+offset_right = -1769.5
+offset_bottom = -1368.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="bw_gradient" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("5_o2p0w")
+centered = false
+
+[node name="ColorGrade" type="ColorRect" parent="bw_gradient"]
+material = ExtResource("4_o1ffp")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FilmGrain" type="ColorRect" parent="bw_gradient"]
+material = ExtResource("4_dbpq2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Vignette" type="ColorRect" parent="bw_gradient"]
+material = ExtResource("2_i7wap")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
