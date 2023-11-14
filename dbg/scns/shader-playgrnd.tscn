@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://cp1jnfjwk2dx0" path="res://dbg/shdrs/vignette.tres" id="2_i7wap"]
 [ext_resource type="Material" uid="uid://yd724pjub6it" path="res://dbg/shdrs/film_grain.tres" id="4_dbpq2"]
 [ext_resource type="Material" uid="uid://crmr6a7xvsflh" path="res://dbg/shdrs/color_grade.tres" id="4_o1ffp"]
-[ext_resource type="Material" uid="uid://chxmwpqbk7a54" path="res://dbg/shdrs/reel.tres" id="5_1r2yf"]
+[ext_resource type="Script" path="res://dbg/reel.cs" id="5_8wvv3"]
 [ext_resource type="Texture2D" uid="uid://cq4j188amhx3s" path="res://dbg/img/bw_gradient.png" id="5_o2p0w"]
 
 [node name="Node2D" type="Node2D"]
@@ -14,8 +14,8 @@ position = Vector2(678, 368)
 scale = Vector2(0.225, 0.225)
 texture = ExtResource("1_ppikd")
 
-[node name="ColorGrade" type="ColorRect" parent="ByodoTempleValley-hawaii"]
-material = ExtResource("4_o1ffp")
+[node name="FilmGrain" type="ColorRect" parent="ByodoTempleValley-hawaii"]
+material = ExtResource("4_dbpq2")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -26,46 +26,47 @@ offset_bottom = -1368.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FilmGrain" type="ColorRect" parent="ByodoTempleValley-hawaii/ColorGrade"]
-material = ExtResource("4_dbpq2")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Vignette" type="ColorRect" parent="ByodoTempleValley-hawaii/ColorGrade/FilmGrain"]
+[node name="Vignette" type="ColorRect" parent="ByodoTempleValley-hawaii"]
 material = ExtResource("2_i7wap")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -1769.5
+offset_top = -1368.0
+offset_right = -1769.5
+offset_bottom = -1368.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BeforeAfterFrame" type="ColorRect" parent="ByodoTempleValley-hawaii/ColorGrade/FilmGrain/Vignette"]
-visible = false
-material = ExtResource("5_1r2yf")
-layout_mode = 1
+[node name="BackBufferCopy" type="BackBufferCopy" parent="ByodoTempleValley-hawaii"]
+scale = Vector2(32, 18)
+copy_mode = 2
+
+[node name="ColorGrade" type="ColorRect" parent="ByodoTempleValley-hawaii/BackBufferCopy"]
+material = ExtResource("4_o1ffp")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = -100.0
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Reel" type="Node2D" parent="ByodoTempleValley-hawaii" node_paths=PackedStringArray("PrevFrame", "NextFrame")]
+script = ExtResource("5_8wvv3")
+PrevFrame = NodePath("")
+NextFrame = NodePath("")
+
+[node name="before_frame" type="Sprite2D" parent="ByodoTempleValley-hawaii"]
+
+[node name="after_frame" type="Sprite2D" parent="ByodoTempleValley-hawaii"]
 
 [node name="bw_gradient" type="Sprite2D" parent="."]
 visible = false
 texture = ExtResource("5_o2p0w")
 centered = false
-
-[node name="ColorGrade" type="ColorRect" parent="bw_gradient"]
-material = ExtResource("4_o1ffp")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="FilmGrain" type="ColorRect" parent="bw_gradient"]
 material = ExtResource("4_dbpq2")
@@ -80,5 +81,21 @@ material = ExtResource("2_i7wap")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="bw_gradient"]
+scale = Vector2(32, 18)
+copy_mode = 2
+
+[node name="ColorGrade" type="ColorRect" parent="bw_gradient/BackBufferCopy"]
+material = ExtResource("4_o1ffp")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = -100.0
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2

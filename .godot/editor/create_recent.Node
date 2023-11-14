@@ -1,12 +1,13 @@
-ColorRect
-Node2D
 Sprite2D
+TextureRect
+Node2D
+ColorRect
+BackBufferCopy
 Label
 TextureButton
 Control
 HBoxContainer
 CanvasGroup
-TextureRect
 AspectRatioContainer
 CenterContainer
 CheckButton
