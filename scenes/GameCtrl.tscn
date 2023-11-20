@@ -7,9 +7,9 @@
 [ext_resource type="Script" path="res://scripts/singletons/opts.cs" id="3_0iv7y"]
 [ext_resource type="Script" path="res://scripts/singletons/ui.cs" id="6_l008w"]
 [ext_resource type="FontFile" uid="uid://ccyhhln4lnkae" path="res://fonts/CherryBombOne-Regular.ttf" id="7_0nvyu"]
-[ext_resource type="Script" path="res://scripts/ui/menu.cs" id="8_pml2u"]
+[ext_resource type="PackedScene" uid="uid://rahmg6waphiw" path="res://scenes/titleCard.tscn" id="7_nv0q8"]
+[ext_resource type="Script" path="res://scripts/ui/MenuUi.cs" id="8_y2jvs"]
 [ext_resource type="Script" path="res://scripts/ui/AudioUi.cs" id="10_5yitw"]
-[ext_resource type="Texture2D" uid="uid://d34pdrvgxum7w" path="res://sprites/ui/TitleTesting.png" id="10_ae2wg"]
 [ext_resource type="Texture2D" uid="uid://t1llsq404xpv" path="res://sprites/ui/ButtonPH_Pressed.png" id="10_h2maf"]
 [ext_resource type="Texture2D" uid="uid://b37gineane143" path="res://sprites/ui/ButtonPH_Hover.png" id="11_gg6ve"]
 [ext_resource type="Texture2D" uid="uid://cphe2in0wh2gp" path="res://sprites/ui/ResetButton2_DIA_2022-10-22_68cc.png" id="11_srumj"]
@@ -21,10 +21,10 @@
 [ext_resource type="FontFile" uid="uid://r4v1su8l6mlu" path="res://fonts/OpenDyslexic-Regular.otf" id="16_ay3rc"]
 [ext_resource type="Theme" uid="uid://cj8uukjwjxqts" path="res://fonts/testTxt.tres" id="16_flwe3"]
 [ext_resource type="Script" path="res://scripts/ui/vidUi.cs" id="22_ux8kt"]
-[ext_resource type="Script" path="res://scripts/ui/splash.cs" id="23_4gt8f"]
 [ext_resource type="Texture2D" uid="uid://elqrsbpxihpt" path="res://sprites/ui/ButtonPH.png" id="23_emuil"]
 [ext_resource type="Texture2D" uid="uid://cihkujjuyh47u" path="res://sprites/ui/NOFUNALLOWED_PLACEHOLDER LOGO.png" id="23_jnq6w"]
 [ext_resource type="Script" path="res://scripts/ui/ctrlUi.cs" id="23_kbpyb"]
+[ext_resource type="Script" path="res://scripts/ui/SplashUi.cs" id="24_rf0bu"]
 [ext_resource type="Texture2D" uid="uid://cy1te8y50g20m" path="res://icon.svg" id="24_xo4nj"]
 
 [sub_resource type="Gradient" id="Gradient_ams70"]
@@ -61,32 +61,18 @@ RetFromBrightBtn = NodePath("../ui/BrightOrganizer/BrightPanel/ReturnBtn")
 ResetBrightBtn = NodePath("../ui/BrightOrganizer/BrightPanel/ResetBtn")
 BrightValTxt = NodePath("../ui/BrightOrganizer/BrightPanel/BrightnessCtrl/BrightnessValue")
 
-[node name="ui" type="Control" parent="." node_paths=PackedStringArray("mainMenuBtns")]
+[node name="ui" type="Control" parent="." node_paths=PackedStringArray("MainMenu")]
 custom_minimum_size = Vector2(160, 90)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 script = ExtResource("6_l008w")
-mainMenuBtns = NodePath("MenuOrganizer/MenuButtons")
+MainMenu = NodePath("MenuOrganizer")
 
-[node name="Title" type="AspectRatioContainer" parent="ui"]
-custom_minimum_size = Vector2(16, 9)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.05
-anchor_right = 0.975
-anchor_bottom = 0.5
-grow_horizontal = 0
-stretch_mode = 3
-alignment_vertical = 0
-
-[node name="TextureRect" type="TextureRect" parent="ui/Title"]
-layout_mode = 2
-texture = ExtResource("10_ae2wg")
-expand_mode = 1
-stretch_mode = 4
+[node name="Title" parent="ui" instance=ExtResource("7_nv0q8")]
+layout_mode = 0
+anchors_preset = 0
 
 [node name="MenuOrganizer" type="AspectRatioContainer" parent="ui"]
 custom_minimum_size = Vector2(16, 9)
@@ -100,16 +86,17 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment_horizontal = 0
 
-[node name="MenuButtons" type="VBoxContainer" parent="ui/MenuOrganizer" node_paths=PackedStringArray("contBtn", "newBtn", "quitBtn", "optsBtn", "credBtn", "credPanel", "closeCredBtn")]
+[node name="MenuButtons" type="VBoxContainer" parent="ui/MenuOrganizer" node_paths=PackedStringArray("TitleCard", "Continue", "New", "Quit", "Options", "Credits", "CredPanel", "QuitCredits")]
 layout_mode = 2
-script = ExtResource("8_pml2u")
-contBtn = NodePath("ContinueBtn")
-newBtn = NodePath("NewBtn")
-quitBtn = NodePath("QuitBtn")
-optsBtn = NodePath("OptionsBtn")
-credBtn = NodePath("CreditsBtn")
-credPanel = NodePath("../../CreditsOrganizer")
-closeCredBtn = NodePath("../../CreditsOrganizer/CreditsPanel/ReturnBtn")
+script = ExtResource("8_y2jvs")
+TitleCard = NodePath("../../Title")
+Continue = NodePath("ContinueBtn")
+New = NodePath("NewBtn")
+Quit = NodePath("QuitBtn")
+Options = NodePath("OptionsBtn")
+Credits = NodePath("CreditsBtn")
+CredPanel = NodePath("../../CreditsOrganizer")
+QuitCredits = NodePath("../../CreditsOrganizer/CreditsPanel/ReturnBtn")
 
 [node name="ContinueBtn" type="TextureButton" parent="ui/MenuOrganizer/MenuButtons"]
 custom_minimum_size = Vector2(160, 70)
@@ -2520,13 +2507,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Splash" type="Control" parent="ui" node_paths=PackedStringArray("BlackBckgrnd", "WhiteForgrnd", "NoFunAllowedLogo", "SubLogos")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("23_4gt8f")
+script = ExtResource("24_rf0bu")
 BlackBckgrnd = NodePath("BlackBackground")
 WhiteForgrnd = NodePath("BlackBackground/WhiteForeground")
 NoFunAllowedLogo = NodePath("BlackBackground/WhiteForeground/NoFunAllowedLogo")
@@ -2574,3 +2562,5 @@ layout_mode = 2
 texture = ExtResource("24_xo4nj")
 expand_mode = 3
 stretch_mode = 5
+
+[node name="World" type="Node2D" parent="."]

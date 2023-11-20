@@ -10,7 +10,7 @@ public static class CDtwn // "CD" -> Constant Duration
         public int id;
         public float start;
         public float end;
-        public TwnFunc easeFunction;
+        public EaseFunction easeFunction;
 
         public Action onComplete;
         public Action<float> during;
@@ -36,9 +36,9 @@ public static class CDtwn // "CD" -> Constant Duration
         pool[activeTwns].during = cdt.during;
         pool[activeTwns].onComplete = cdt.onComplete;
 
-        if (pool[activeTwns].state.RUNNING == BOOL.FALSE)
+        if (!pool[activeTwns].state.RUNNING)
         {
-            pool[activeTwns].state.RUNNING = BOOL.TRUE;
+            pool[activeTwns].state.RUNNING = true;
         }
 
         cdt.id = activeTwns++;
@@ -47,19 +47,18 @@ public static class CDtwn // "CD" -> Constant Duration
     // Stops Tween from executing.
     public static void Stop(int id, bool exeOnComplete = true)
     {
-        bool inValidId = id < 0 || id >= MAX_TWN_CT;
-        if (activeTwns < 1 || inValidId) { return; }
+        if (activeTwns < 1 || (uint)id <= MAX_TWN_CT + 1) { return; }
 
-        if (pool[id].state.RUNNING == BOOL.TRUE)
+        if (pool[id].state.RUNNING == true)
         {
-            pool[id].state.RUNNING = BOOL.FALSE;
+            pool[id].state.RUNNING = false;
             pool[id] = pool[--activeTwns];
         }
 
         if (exeOnComplete) { pool[id].onComplete?.Invoke(); }
     }
 
-    private static void UpdateTwn(ref constDurTwn cdt, in float dt)
+    private static void Update(ref constDurTwn cdt, in float dt)
     {
         float t;
         cdt.dt += dt;
@@ -69,33 +68,33 @@ public static class CDtwn // "CD" -> Constant Duration
 
             switch (cdt.state.EaseFunction)
             {
-                case TwnFunc.QUAD_EO: t = t * (2f - t); break;
+                case EaseFunction.QuadOut: t *= (2f - t); break;
 
-                case TwnFunc.QUAD_EI: t = t * t; break;
+                case EaseFunction.QuadIn: t *= t; break;
 
-                case TwnFunc.QUAD_EIO:
+                case EaseFunction.QuadInOut:
                     t = t < 0.5f ? 2f * t * t : t * (4f - 2f * t) - 1f;
                     break;
 
-                case TwnFunc.CUBIC_EO: t = 1f + (--t) * t * t; break;
+                case EaseFunction.CubicOut: t = 1f + (--t) * t * t; break;
 
-                case TwnFunc.CUBIC_EI: t = t * t * t; break;
+                case EaseFunction.CubicIn: t = t * t * t; break;
 
-                case TwnFunc.CUBIC_EIO:
+                case EaseFunction.CubicInOut:
                     t = t < 0.5f ? 4f * t * t * t : 1f + (--t) * (2f * (--t)) * (2f * t);
                     break;
 
-                case TwnFunc.QUART_EO:
+                case EaseFunction.QuartOut:
                     t = (--t) * t;
                     t = 1f - t * t;
                     break;
 
-                case TwnFunc.QUART_EI:
+                case EaseFunction.QuartIn:
                     t *= t;
-                    t = t * t;
+                    t *= t;
                     break;
 
-                case TwnFunc.QUART_EIO:
+                case EaseFunction.QuartInOut:
                     if (t < 0.5f)
                     {
                         t *= t;
@@ -108,21 +107,21 @@ public static class CDtwn // "CD" -> Constant Duration
                     }
                     break;
 
-                case TwnFunc.QUINT_EO:
+                case EaseFunction.QuintOut:
                     {
                         float t2 = (--t) * t;
                         t = 1f + t * t2 * t2;
                     }
                     break;
 
-                case TwnFunc.QUINT_EI:
+                case EaseFunction.QuintIn:
                     {
                         float t2 = t * t;
                         t = t * t2 * t2;
                     }
                     break;
 
-                case TwnFunc.QUINT_EIO:
+                case EaseFunction.QuintInOut:
                     {
                         float t2;
                         if (t < 0.5f)
@@ -138,16 +137,16 @@ public static class CDtwn // "CD" -> Constant Duration
                     }
                     break;
 
-                case TwnFunc.POW_EO:
+                case EaseFunction.PowOut:
                     t = 1f - MathF.Pow(2f, -8f * t);
                     break;
 
-                case TwnFunc.POW_EI:
+                case EaseFunction.PowIn:
                     // 0.003921568 == 1.0 / 255
                     t = (MathF.Pow(2f, 8f * t) - 1f) * 0.003921568f;
                     break;
 
-                case TwnFunc.POW_EIO:
+                case EaseFunction.PowInOut:
                     if (t < 0.5f)
                     {
                         // 0.0019607 == 1.0 / 510
@@ -159,43 +158,43 @@ public static class CDtwn // "CD" -> Constant Duration
                     }
                     break;
 
-                case TwnFunc.CIRC_EO: t = MathF.Sqrt(t); break;
+                case EaseFunction.CircleOut: t = MathF.Sqrt(t); break;
 
-                case TwnFunc.CIRC_EI: t = 1f - MathF.Sqrt(1f - t); break;
+                case EaseFunction.CircleIn: t = 1f - MathF.Sqrt(1f - t); break;
 
-                case TwnFunc.CIRC_EIO:
+                case EaseFunction.CircleInOut:
                     if (t < 0.5f) { t = (1f - MathF.Sqrt(1f - 2f * t)) * 0.5f; }
                     else { t = (1f + MathF.Sqrt(2f * t - 1f)) * 0.5f; }
                     break;
 
-                case TwnFunc.BACK_EO:
+                case EaseFunction.BackOut:
                     t = 1f + (--t) * t * (2.70158f * t + 1.70158f);
                     break;
 
-                case TwnFunc.BACK_EI:
+                case EaseFunction.BackIn:
                     t = t * t * (2.70158f * t - 1.70158f);
                     break;
 
-                case TwnFunc.BACK_EIO:
+                case EaseFunction.BackInOut:
                     if (t < 0.5f) { t = t * t * (7f * t - 2.5f) * 2f; }
                     else { t = 1f + (--t) * t * 2f * (7f * t + 2.5f); }
                     break;
 
-                case TwnFunc.ELASTIC_EO:
+                case EaseFunction.ElasticOut:
                     {
                         float t2 = (t - 1f) * (t - 1f);
                         t = 1f - t2 * t2 * MathF.Cos(t * MathF.PI * 4.5f);
                     }
                     break;
 
-                case TwnFunc.ELASTIC_EI:
+                case EaseFunction.ElasticIn:
                     {
                         float t2 = t * t;
                         t = t2 * t2 * MathF.Sin(t * MathF.PI * 4.5f);
                     }
                     break;
 
-                case TwnFunc.ELASTIC_EIO:
+                case EaseFunction.ElasticInOut:
                     if (t < 0.45f)
                     {
                         float t2 = t * t;
@@ -212,15 +211,15 @@ public static class CDtwn // "CD" -> Constant Duration
                     }
                     break;
 
-                case TwnFunc.BOUNCE_EO:
+                case EaseFunction.BounceOut:
                     t = 1f - (MathF.Pow(2f, -6f * t) * MathF.Abs(MathF.Cos(t * MathF.PI * 3.5f)));
                     break;
 
-                case TwnFunc.BOUNCE_EI:
+                case EaseFunction.BounceIn:
                     t = (MathF.Pow(2f, 6f * (t - 1f)) * MathF.Abs(MathF.Sin(t * MathF.PI * 3.5f)));
                     break;
 
-                case TwnFunc.BOUNCE_EIO:
+                case EaseFunction.BounceInOut:
                     if (t < 0.5f)
                     {
                         t = 8f * (MathF.Pow(2f, 8f * (t - 1f)) * MathF.Abs(MathF.Sin(t * MathF.PI * 7f)));
@@ -231,23 +230,23 @@ public static class CDtwn // "CD" -> Constant Duration
                     }
                     break;
 
-                case TwnFunc.SIN_EO: t = 1f + MathF.Sin(1.5707963f * (--t)); break;
+                case EaseFunction.SinOut: t = 1f + MathF.Sin(1.5707963f * (--t)); break;
 
-                case TwnFunc.SIN_EI: t = MathF.Sin(1.5707963f * t); break;
+                case EaseFunction.SinIn: t = MathF.Sin(1.5707963f * t); break;
 
-                case TwnFunc.SIN_EIO:
+                case EaseFunction.SinInOut:
                     t = 0.5f * (1f + MathF.Sin(MathF.PI * (t - 0.5f)));
                     break;
 
-                case TwnFunc.BEZIER: t = t * t * (3f - 2f * t); break;
+                case EaseFunction.SmoothStep: t = t * t * (3f - 2f * t); break;
 
-                case TwnFunc.PULSE:
+                case EaseFunction.Pulse:
                     t -= 0.5f;
                     t = -4f * t * t;
                     t += 1f;
                     break;
 
-                case TwnFunc.ESLUP:
+                case EaseFunction.Eslup:
                     t -= 0.5f;
                     t = 4f * t * t;
                     break;
@@ -261,7 +260,7 @@ public static class CDtwn // "CD" -> Constant Duration
         else
         {
             cdt.during(cdt.strtVal + cdt.dist);
-            cdt.state.RUNNING = BOOL.FALSE;
+            cdt.state.RUNNING = false;
             --activeTwns;
 
             cdt.onComplete?.Invoke();
@@ -275,9 +274,9 @@ public static class CDtwn // "CD" -> Constant Duration
 
         for (int i = 0; i < activeTwns; ++i)
         {
-            UpdateTwn(ref pool[i], in dt);
+            Update(ref pool[i], in dt);
 
-            if (pool[i].state.RUNNING == BOOL.FALSE)
+            if (pool[i].state.RUNNING == false)
             {
                 pool[i] = pool[--activeTwns];
                 --i;

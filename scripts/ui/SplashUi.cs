@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class splash : Node
+public partial class SplashUi : Node
 {
 	[Export] ColorRect BlackBckgrnd;
 	[Export] ColorRect WhiteForgrnd;
@@ -27,7 +27,7 @@ public partial class splash : Node
 
 		splashTwn.start = 1f;
 		splashTwn.end = 0f;
-		splashTwn.easeFunction = TwnFunc.CUBIC_EO;
+		splashTwn.easeFunction = EaseFunction.CubicOut;
 		splashTwn.during = DuringSplashHide;
 		splashTwn.onComplete = this.QueueFree;
 
@@ -42,7 +42,7 @@ public partial class splash : Node
 		// this point
 		canQuit = false;
 
-		Tmr.Start(2f, HideSplash);
+		Tmr.Start(1f, HideSplash);
 	}
 
 	public void DuringSubLogoReveal(float alpha)
@@ -65,7 +65,6 @@ public partial class splash : Node
 	public void DuringNFALogoReveal(float alpha)
 	{
 		transparency.A = alpha;
-
 		NoFunAllowedLogo.SelfModulate = transparency;
 	}
 
@@ -90,7 +89,7 @@ public partial class splash : Node
 		splashTwn.start = 0f;
 		splashTwn.end = 1f;
 		splashTwn.duration = 2f;
-		splashTwn.easeFunction = TwnFunc.CUBIC_EO;
+		splashTwn.easeFunction = EaseFunction.CubicOut;
 		splashTwn.during = DuringWhiteForegroundReveal;
 		splashTwn.onComplete = WhiteForegroundShown;
 
@@ -99,7 +98,12 @@ public partial class splash : Node
 
 	public override void _Ready()
 	{
-		transparency = shdr.Wht(0);
+#if DEBUG
+        HideSplash();
+        return;
+#endif
+
+		transparency = Shdr.White(0);
 
 		WhiteForgrnd.Modulate = transparency;
 		NoFunAllowedLogo.SelfModulate = transparency;

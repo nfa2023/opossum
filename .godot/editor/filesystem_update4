@@ -1,10 +1,7 @@
-res://dbg/scns/shader-playgrnd.tscn
-res://dbg/shdrs/vignette.tres
+res://scenes/GameCtrl.tscn
 res://dbg/shdrs/film_grain.gdshader
-res://dbg/shdrs/film_grain.tres
 res://dbg/shdrs/color_grade.gdshader
-res://dbg/shdrs/color_grade.tres
-res://dbg/shdrs/reel.gdshader
+res://scenes/test.tscn
 res://dbg/reel.cs
 res://scripts/singletons/acc.cs
 res://scripts/singletons/Audio.cs
@@ -20,4 +17,7 @@ res://scripts/ui/ctrlUi.cs
 res://scripts/ui/menu.cs
 res://scripts/ui/splash.cs
 res://scripts/ui/vidUi.cs
-res://scenes/GameCtrl.tscn
+res://scripts/game/player/PlayerLocomotion.cs
+res://scripts/ui/MenuUi.cs
+res://scripts/ui/SplashUi.cs
+res://scenes/BaseGame.tscn

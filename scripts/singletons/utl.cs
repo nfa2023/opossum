@@ -30,26 +30,15 @@ public partial class Utl : Node
     public static readonly string PCT_FRMT = "{0}%";
     public static readonly string FIFTY = "50";
     public static readonly string TEN = "10";
-    public static readonly string _75_PCT = "75%";
-    public static readonly string _100_PCT = "100%";
-    public static readonly string _150_PCT = "150%";
-
-    public const int CLR_MIN = 0;   public const int CLR_MAX = 8;
-    public const int BLACK = 0;     public const int WHITE = 1;
-    public const int RED = 2;       public const int GREEN = 3;
-    public const int BLUE = 4;      public const int CYAN = 5;
-    public const int MAGENTA = 6;   public const int YELLOW = 7;
-    public static readonly Color[] Clrs = new Color[CLR_MAX]
-    {
-        shdr.BLACK,     shdr.WHITE,     shdr.RED,       shdr.GREEN,
-        shdr.BLUE,      shdr.CYAN,      shdr.MAGENTA,   shdr.YELLOW
-    };
+    public static readonly string _75_PERCENT = "75%";
+    public static readonly string _100_PERCENT = "100%";
+    public static readonly string _150_PERCENT = "150%";
 
     public static string i2sPercent(int number)
     {
-        if(number == 150) { return _150_PCT; }
-        if(number == 100) { return _100_PCT; }
-        if(number == 75) { return _75_PCT; }
+        if(number == 150) { return _150_PERCENT; }
+        if(number == 100) { return _100_PERCENT; }
+        if(number == 75) { return _75_PERCENT; }
         return string.Format(PCT_FRMT, Str.i2s(number));
     }
 
@@ -123,7 +112,9 @@ public partial class Utl : Node
         Twn.Eval(dt);
         Ftmr.Tick(1);
         Tmr.Tick(dt);
-	}
+
+        inp.CaptureInput();
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -132,12 +123,5 @@ public partial class Utl : Node
 
         fdt = uFdt * dtScale * mgt.acc.timeScale;
         invFdt = 1f / fdt;
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        inp.CaptureInput(@event);
-
-        if (inp.UP_PRESSED) { GD.Print("Up pressed."); }
     }
 }

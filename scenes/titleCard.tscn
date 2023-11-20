@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://rahmg6waphiw"]
+
+[ext_resource type="Texture2D" uid="uid://d34pdrvgxum7w" path="res://sprites/ui/TitleTesting.png" id="1_4lfji"]
+
+[node name="Title" type="AspectRatioContainer"]
+custom_minimum_size = Vector2(16, 9)
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.05
+anchor_right = 0.975
+anchor_bottom = 0.5
+grow_horizontal = 0
+stretch_mode = 3
+alignment_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_4lfji")
+expand_mode = 1
+stretch_mode = 4

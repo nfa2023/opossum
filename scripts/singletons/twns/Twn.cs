@@ -12,7 +12,7 @@ public static class Twn
         public float duration;
         public float start;
         public float end;
-        public TwnFunc easeFunction;
+        public EaseFunction easeFunction;
 
         public Action onComplete;
         public Action<float> during;
@@ -23,7 +23,7 @@ public static class Twn
             duration = 0f;
             start = 0f;
             end = 0f;
-            easeFunction = TwnFunc.NULL;
+            easeFunction = EaseFunction.NULL;
             onComplete = null;
             during = null;
         }
@@ -35,7 +35,7 @@ public static class Twn
     public static twn[] pool = new twn[MAX_TWN_CT];
 
     [MethodImpl(INLINE)]
-    private static void UpdateTwn(ref twn t, in float dt)
+    private static void Update(ref twn t, in float dt)
     {
         float v;
 
@@ -46,33 +46,33 @@ public static class Twn
 
             switch (t.state.EaseFunction)
             {
-                case TwnFunc.QUAD_EO: v = v * (2f - v); break;
+                case EaseFunction.QuadOut: v *= (2f - v); break;
 
-                case TwnFunc.QUAD_EI: v = v * v; break;
+                case EaseFunction.QuadIn: v *= v; break;
 
-                case TwnFunc.QUAD_EIO:
+                case EaseFunction.QuadInOut:
                     v = v < 0.5f ? 2f * v * v : v * (4f - 2f * v) - 1f;
                     break;
 
-                case TwnFunc.CUBIC_EO: v = 1f + (--v) * v * v; break;
+                case EaseFunction.CubicOut: v = 1f + (--v) * v * v; break;
 
-                case TwnFunc.CUBIC_EI: v = v * v * v; break;
+                case EaseFunction.CubicIn: v = v * v * v; break;
 
-                case TwnFunc.CUBIC_EIO:
+                case EaseFunction.CubicInOut:
                     v = v < 0.5f ? 4f * v * v * v : 1f + (--v) * (2f * (--v)) * (2f * v);
                     break;
 
-                case TwnFunc.QUART_EO:
+                case EaseFunction.QuartOut:
                     v = (--v) * v;
                     v = 1f - v * v;
                     break;
 
-                case TwnFunc.QUART_EI:
+                case EaseFunction.QuartIn:
                     v *= v;
-                    v = v * v;
+                    v *= v;
                     break;
 
-                case TwnFunc.QUART_EIO:
+                case EaseFunction.QuartInOut:
                     if (v < 0.5f)
                     {
                         v *= v;
@@ -85,21 +85,21 @@ public static class Twn
                     }
                     break;
 
-                case TwnFunc.QUINT_EO:
+                case EaseFunction.QuintOut:
                     {
                         float v2 = (--v) * v;
                         v = 1f + v * v2 * v2;
                     }
                     break;
 
-                case TwnFunc.QUINT_EI:
+                case EaseFunction.QuintIn:
                     {
                         float v2 = v * v;
                         v = v * v2 * v2;
                     }
                     break;
 
-                case TwnFunc.QUINT_EIO:
+                case EaseFunction.QuintInOut:
                     {
                         float v2;
                         if (v < 0.5f)
@@ -115,14 +115,14 @@ public static class Twn
                     }
                     break;
 
-                case TwnFunc.POW_EO: v = 1f - MathF.Pow(2f, -8f * v); break;
+                case EaseFunction.PowOut: v = 1f - MathF.Pow(2f, -8f * v); break;
 
-                case TwnFunc.POW_EI:
+                case EaseFunction.PowIn:
                     // 0.003921568 == 1.0 / 255
                     v = (MathF.Pow(2f, 8f * v) - 1f) * 0.003921568f;
                     break;
 
-                case TwnFunc.POW_EIO:
+                case EaseFunction.PowInOut:
                     if (v < 0.5f)
                     {
                         // 0.0019607 == 1.0 / 510
@@ -134,11 +134,11 @@ public static class Twn
                     }
                     break;
 
-                case TwnFunc.CIRC_EO: v = MathF.Sqrt(v); break;
+                case EaseFunction.CircleOut: v = MathF.Sqrt(v); break;
 
-                case TwnFunc.CIRC_EI: v = 1f - MathF.Sqrt(1f - v); break;
+                case EaseFunction.CircleIn: v = 1f - MathF.Sqrt(1f - v); break;
 
-                case TwnFunc.CIRC_EIO:
+                case EaseFunction.CircleInOut:
                     if (v < 0.5f)
                     {
                         v = (1f - MathF.Sqrt(1f - 2f * v)) * 0.5f;
@@ -149,13 +149,13 @@ public static class Twn
                     }
                     break;
 
-                case TwnFunc.BACK_EO:
+                case EaseFunction.BackOut:
                     v = 1f + (--v) * v * (2.70158f * v + 1.70158f);
                     break;
 
-                case TwnFunc.BACK_EI: v = v * v * (2.70158f * v - 1.70158f); break;
+                case EaseFunction.BackIn: v = v * v * (2.70158f * v - 1.70158f); break;
 
-                case TwnFunc.BACK_EIO:
+                case EaseFunction.BackInOut:
                     if (v < 0.5f)
                     {
                         v = v * v * (7f * v - 2.5f) * 2f;
@@ -166,21 +166,21 @@ public static class Twn
                     }
                     break;
 
-                case TwnFunc.ELASTIC_EO:
+                case EaseFunction.ElasticOut:
                     {
                         float v2 = (v - 1f) * (v - 1f);
                         v = 1f - v2 * v2 * MathF.Cos(v * MathF.PI * 4.5f);
                     }
                     break;
 
-                case TwnFunc.ELASTIC_EI:
+                case EaseFunction.ElasticIn:
                     {
                         float v2 = v * v;
                         v = v2 * v2 * MathF.Sin(v * MathF.PI * 4.5f);
                     }
                     break;
 
-                case TwnFunc.ELASTIC_EIO:
+                case EaseFunction.ElasticInOut:
                     if (v < 0.45f)
                     {
                         float v2 = v * v;
@@ -197,15 +197,15 @@ public static class Twn
                     }
                     break;
 
-                case TwnFunc.BOUNCE_EO:
+                case EaseFunction.BounceOut:
                     v = 1f - (MathF.Pow(2f, -6f * v) * MathF.Abs(MathF.Cos(v * MathF.PI * 3.5f)));
                     break;
 
-                case TwnFunc.BOUNCE_EI:
+                case EaseFunction.BounceIn:
                     v = (MathF.Pow(2f, 6f * (v - 1f)) * MathF.Abs(MathF.Sin(v * MathF.PI * 3.5f)));
                     break;
 
-                case TwnFunc.BOUNCE_EIO:
+                case EaseFunction.BounceInOut:
                     if (v < 0.5f)
                     {
                         v = 8f * (MathF.Pow(2f, 8f * (v - 1f)) * MathF.Abs(MathF.Sin(v * MathF.PI * 7f)));
@@ -216,23 +216,25 @@ public static class Twn
                     }
                     break;
 
-                case TwnFunc.SIN_EO: v = 1f + MathF.Sin(1.5707963f * (--v)); break;
+                case EaseFunction.SinOut: v = 1f + MathF.Sin(1.5707963f * (--v)); break;
 
-                case TwnFunc.SIN_EI: v = MathF.Sin(1.5707963f * v); break;
+                case EaseFunction.SinIn: v = MathF.Sin(1.5707963f * v); break;
 
-                case TwnFunc.SIN_EIO:
+                case EaseFunction.SinInOut:
                     v = 0.5f * (1f + MathF.Sin(MathF.PI * (v - 0.5f)));
                     break;
 
-                case TwnFunc.BEZIER: v = v * v * (3f - 2f * v); break;
+                case EaseFunction.SmoothStep: v = v * v * (3f - 2f * v); break;
 
-                case TwnFunc.PULSE:
+                case EaseFunction.SmootherStep: v = v * v * v * (v * (6f * v - 15f) + 10f); break;
+
+                case EaseFunction.Pulse:
                     v -= 0.5f;
                     v = -4f * v * v;
                     v += 1f;
                     break;
 
-                case TwnFunc.ESLUP:
+                case EaseFunction.Eslup:
                     v -= 0.5f;
                     v = 4f * v * v;
                     break;
@@ -245,7 +247,7 @@ public static class Twn
         else
         {
             t.during(t.strtVal + t.dist);
-            t.state.RUNNING = BOOL.FALSE;
+            t.state.RUNNING = false;
             t.onComplete?.Invoke();
         }
     }
@@ -265,18 +267,17 @@ public static class Twn
         pool[activeTwns].onComplete = t.onComplete;
 
         pool[activeTwns].dt = 0f;
-        pool[activeTwns].state.RUNNING = BOOL.TRUE;
+        pool[activeTwns].state.RUNNING = true;
         t.id = activeTwns++;
     }
 
     public static void Stop(int id, bool exeOnComplete = true)
     {
-        bool inValidId = id < 0 || id >= MAX_TWN_CT;
-        if (activeTwns < 1 || inValidId) { return; }
+        if (activeTwns < 1 || (uint)id >= MAX_TWN_CT) { return; }
 
-        if (pool[id].state.RUNNING == BOOL.TRUE)
+        if (pool[id].state.RUNNING)
         {
-            pool[id].state.RUNNING = BOOL.FALSE;
+            pool[id].state.RUNNING = false;
             pool[id] = pool[--activeTwns];
         }
 
@@ -287,11 +288,11 @@ public static class Twn
     {
         if (activeTwns < 1 || MathF.Abs(dt) < FLT_EPSILON) { return; }
 
-        for (int i = 0; i < activeTwns; ++i) 
-        { 
-            UpdateTwn(ref pool[i], in dt); 
+        for (int i = 0; i < activeTwns; ++i)
+        {
+            Update(ref pool[i], in dt);
 
-            if (pool[i].state.RUNNING == BOOL.FALSE)
+            if (pool[i].state.RUNNING == false)
             {
                 pool[i] = pool[--activeTwns];
                 --i;

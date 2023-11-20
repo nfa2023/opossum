@@ -72,7 +72,7 @@ public partial class AudioUi : Node
         mgt.snd.TTS = LnrSndVols[TTS] * 0.01f;
 
         mgt.snd.SetVols2Bus();
-        NFA.Accessibility.TTS.UpdateVolume();
+        NFA.Accessibility.TTS.UpdateVol();
     }
 
 	public Label GetVolLabel(AudioType sndType)

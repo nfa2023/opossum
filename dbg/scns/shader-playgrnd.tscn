@@ -54,10 +54,8 @@ offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Reel" type="Node2D" parent="ByodoTempleValley-hawaii" node_paths=PackedStringArray("PrevFrame", "NextFrame")]
+[node name="Reel" type="Node2D" parent="ByodoTempleValley-hawaii"]
 script = ExtResource("5_8wvv3")
-PrevFrame = NodePath("")
-NextFrame = NodePath("")
 
 [node name="before_frame" type="Sprite2D" parent="ByodoTempleValley-hawaii"]
 

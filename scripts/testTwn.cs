@@ -11,7 +11,7 @@ public partial class testTwn : Node
         Twn.Tween t = new Twn.Tween();
         t.start = GD.Randf() * 5f;
         t.end = t.start + (GD.Randf() * 5f);
-        t.easeFunction = TwnFunc.BEZIER;
+        t.easeFunction = EaseFunction.SmoothStep;
         t.duration = GD.Randf() * 5f;
         t.during = TwnSpritePos;
         t.onComplete = FinishTwn;
@@ -35,7 +35,7 @@ public partial class testTwn : Node
 		{
 			t.start = GD.Randf() * TEST_TWN_MAX;
 			t.end = t.start + (GD.Randf() * TEST_TWN_MAX);
-			t.easeFunction = TwnFunc.BEZIER;
+			t.easeFunction = EaseFunction.SmoothStep;
 			t.duration = GD.Randf() * TEST_TWN_MAX;
 			t.during = TwnSpritePos;
 			t.onComplete = null;

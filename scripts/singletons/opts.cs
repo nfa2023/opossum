@@ -76,14 +76,14 @@ public partial class opts : Node
 
 	public void ShowOpts()
 	{
-		mgt.ui.mainMenuBtns.HideMenuBtns();
+		mgt.ui.MainMenu.HideMenuBtns();
 
         OptsMenu.Visible = true;
     }
 
 	public void HideOpts()
 	{
-        mgt.ui.mainMenuBtns.ShowMenuBtns();
+        mgt.ui.MainMenu.ShowMenuBtns();
 
         OptsMenu.Visible = false;
     }

@@ -24,7 +24,7 @@ public struct SERIAL_SND
 [StructLayout(LayoutKind.Sequential)]
 public struct SERIAL_VIDEO
 {
-    public Vector2I RESOLUTION = new Vector2I(1280, 720);
+    public Vector2I RESOLUTION = new(1280, 720);
     public int BRIGHTNESS = 50;
 
     public bool FULLSCREEN_ENABLED = true;
@@ -33,7 +33,7 @@ public struct SERIAL_VIDEO
 
     public SERIAL_VIDEO()
     {
-        RESOLUTION = new Vector2I(1280, 720);
+        RESOLUTION = new(1280, 720);
         BRIGHTNESS = 50;
 
         FULLSCREEN_ENABLED = true;
@@ -48,8 +48,8 @@ public struct SERIAL_ACCESSIBILITY
     public bool DYSLEXIC_FONT_ENABLED = true;
     public int FONT_SIZE = 36;
     public int FONT_OUTLINE_SIZE = 7;
-    public int FONT_COLOR_INDEX = Utl.WHITE;
-    public int FONT_OUTLINE_COLOR_INDEX = Utl.BLACK;
+    public int FONT_COLOR_INDEX = (int)Colors.White;
+    public int FONT_OUTLINE_COLOR_INDEX = (int)Colors.Black;
 
     public bool TTS_ENABLED = false;
     public int TTS_RATE = 10;
@@ -61,8 +61,8 @@ public struct SERIAL_ACCESSIBILITY
         DYSLEXIC_FONT_ENABLED = true;
         FONT_SIZE = 36;
         FONT_OUTLINE_SIZE = 7;
-        FONT_COLOR_INDEX = Utl.WHITE;
-        FONT_OUTLINE_COLOR_INDEX = Utl.BLACK;
+        FONT_COLOR_INDEX = (int)Colors.White;
+        FONT_OUTLINE_COLOR_INDEX = (int)Colors.Black;
 
         TTS_ENABLED = false;
         TTS_RATE = 10;
@@ -81,14 +81,14 @@ public struct SERIAL_CONTROL_BINDING
 public class SerialOptions
 {
     [ProtoMember(0)]
-    public SERIAL_SND SOUND = new SERIAL_SND();
+    public SERIAL_SND SOUND = new();
 
     [ProtoMember(1)]
-    public SERIAL_VIDEO VIDEO = new SERIAL_VIDEO();
+    public SERIAL_VIDEO VIDEO = new();
 
     [ProtoMember(2)]
-    public SERIAL_ACCESSIBILITY ACCESSIBILITY = new SERIAL_ACCESSIBILITY();
+    public SERIAL_ACCESSIBILITY ACCESSIBILITY = new();
 
     [ProtoMember(3)]
-    public SERIAL_CONTROL_BINDING BUTTON_MAP = new SERIAL_CONTROL_BINDING();
+    public SERIAL_CONTROL_BINDING BUTTON_MAP = new();
 }

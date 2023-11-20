@@ -12,42 +12,70 @@ public static class inp
 	public static readonly string CANCEL_STR = "cancel";
 	public static readonly string TTS_SPEAK_STR = "tts_speak";
 
-	public static bool UP_PRESSED = false;
-	public static bool DOWN_PRESSED = false;
-	public static bool LEFT_PRESSED = false;
-	public static bool RIGHT_PRESSED = false;
-	public static bool SELECT_PRESSED = false;
-	public static bool EXAMINE_PRESSED = false;
-	public static bool CANCEL_PRESSED = false;
-	public static bool TTS_PRESSED = false;
+	public static bool FORWARD_HELD = false;
+	public static bool BACKWARD_HELD = false;
+	public static bool LEFT_HELD = false;
+	public static bool RIGHT_HELD = false;
+	public static bool SELECT_HELD = false;
+	public static bool EXAMINE_HELD = false;
+	public static bool CANCEL_HELD = false;
+	public static bool TTS_HELD = false;
 
-    public static bool UP_RELEASED = false;
-    public static bool DOWN_RELEASED = false;
-    public static bool LEFT_RELEASED = false;
-    public static bool RIGHT_RELEASED = false;
-    public static bool SELECT_RELEASED = false;
-    public static bool EXAMINE_RELEASED = false;
-    public static bool CANCEL_RELEASED = false;
-    public static bool TTS_RELEASED = false;
+    public static bool FORWARD_DOWN = false;
+    public static bool BACKWARD_DOWN = false;
+    public static bool LEFT_DOWN = false;
+    public static bool RIGHT_DOWN = false;
+    public static bool SELECT_DOWN = false;
+    public static bool EXAMINE_DOWN = false;
+    public static bool CANCEL_DOWN = false;
+    public static bool TTS_DOWN = false;
 
-    public static void CaptureInput(InputEvent @ie)
+    public static bool FORWARD_UP = false;
+    public static bool BACKWARD_UP = false;
+    public static bool LEFT_UP = false;
+    public static bool RIGHT_UP = false;
+    public static bool SELECT_UP = false;
+    public static bool EXAMINE_UP = false;
+    public static bool CANCEL_UP = false;
+    public static bool TTS_UP = false;
+
+    public static bool MOVE_HELD = false;
+    public static bool MOVE_DOWN = false;
+    public static bool MOVE_UP = false;
+
+    public static void CaptureInput()
 	{
-		UP_PRESSED = @ie.IsActionPressed(UP_STR);
-		DOWN_PRESSED = @ie.IsActionPressed(DOWN_STR);
-		LEFT_PRESSED = @ie.IsActionPressed(LEFT_STR);
-		RIGHT_PRESSED = @ie.IsActionPressed(RIGHT_STR);
-		SELECT_PRESSED = @ie.IsActionPressed(SELECT_STR);
-		EXAMINE_PRESSED = @ie.IsActionPressed(EXAMINE_STR);
-		CANCEL_PRESSED = @ie.IsActionPressed(CANCEL_STR);
-		TTS_PRESSED = @ie.IsActionPressed(TTS_SPEAK_STR);
+        FORWARD_DOWN = Input.IsActionJustPressed(UP_STR);
+        BACKWARD_DOWN = Input.IsActionJustPressed(DOWN_STR);
+        LEFT_DOWN = Input.IsActionJustPressed(LEFT_STR);
+        RIGHT_DOWN = Input.IsActionJustPressed(RIGHT_STR);
+        SELECT_DOWN = Input.IsActionJustPressed(SELECT_STR);
+        EXAMINE_DOWN = Input.IsActionJustPressed(EXAMINE_STR);
+        CANCEL_DOWN = Input.IsActionJustPressed(CANCEL_STR);
+        TTS_DOWN = Input.IsActionJustPressed(TTS_SPEAK_STR);
 
-		UP_RELEASED = @ie.IsActionReleased(UP_STR);
-		DOWN_RELEASED = @ie.IsActionReleased(DOWN_STR);
-		LEFT_RELEASED = @ie.IsActionReleased(LEFT_STR);
-		RIGHT_RELEASED = @ie.IsActionReleased(RIGHT_STR);
-		SELECT_RELEASED = @ie.IsActionReleased(SELECT_STR);
-		EXAMINE_RELEASED = @ie.IsActionReleased(EXAMINE_STR);
-		CANCEL_RELEASED = @ie.IsActionReleased(CANCEL_STR);
-		TTS_RELEASED = @ie.IsActionReleased(TTS_SPEAK_STR);
+		MOVE_DOWN = FORWARD_DOWN || BACKWARD_DOWN || LEFT_DOWN || RIGHT_DOWN;
+
+        FORWARD_HELD = Input.IsActionPressed(UP_STR);
+		BACKWARD_HELD = Input.IsActionPressed(DOWN_STR);
+		LEFT_HELD = Input.IsActionPressed(LEFT_STR);
+		RIGHT_HELD = Input.IsActionPressed(RIGHT_STR);
+		SELECT_HELD = Input.IsActionPressed(SELECT_STR);
+		EXAMINE_HELD = Input.IsActionPressed(EXAMINE_STR);
+		CANCEL_HELD = Input.IsActionPressed(CANCEL_STR);
+		TTS_HELD = Input.IsActionPressed(TTS_SPEAK_STR);
+
+		MOVE_HELD = FORWARD_HELD || BACKWARD_HELD || LEFT_HELD || RIGHT_HELD;
+
+        FORWARD_UP = Input.IsActionJustReleased(UP_STR);
+		BACKWARD_UP = Input.IsActionJustReleased(DOWN_STR);
+		LEFT_UP = Input.IsActionJustReleased(LEFT_STR);
+		RIGHT_UP = Input.IsActionJustReleased(RIGHT_STR);
+		SELECT_UP = Input.IsActionJustReleased(SELECT_STR);
+		EXAMINE_UP = Input.IsActionJustReleased(EXAMINE_STR);
+		CANCEL_UP = Input.IsActionJustReleased(CANCEL_STR);
+		TTS_UP = Input.IsActionJustReleased(TTS_SPEAK_STR);
+
+		MOVE_UP = FORWARD_UP || BACKWARD_UP || LEFT_UP || RIGHT_UP;
     }
 }

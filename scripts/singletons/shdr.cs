@@ -1,7 +1,9 @@
 using Godot;
 using System.Runtime.CompilerServices;
 
-public static class shdr
+public enum Colors { Black, White, Red, Green, Blue, Cyan, Magenta, Yellow }
+
+public static class Shdr
 {
     public const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 
@@ -28,14 +30,20 @@ public static class shdr
     public static readonly Color MAGENTA =  Color.Color8(255, 0, 255);
     public static readonly Color YELLOW =   Color.Color8(255, 255, 0);
 
+    public const int CLR_MAX = 8;
+    public static readonly Color[] Clrs = new Color[CLR_MAX]
+    {
+        BLACK, WHITE, RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW
+    };
+
     [MethodImpl(INLINE)]
-    public static Color Blk(byte opacity)
+    public static Color Black(byte opacity)
     {
         return Color.Color8(0, 0, 0, opacity);
     }
 
     [MethodImpl(INLINE)]
-    public static Color Wht(byte opacity)
+    public static Color White(byte opacity)
     {
         return Color.Color8(255, 255, 255, opacity);
     }
@@ -47,7 +55,7 @@ public static class shdr
     }
 
     [MethodImpl(INLINE)]
-    public static Color Grn(byte opacity)
+    public static Color Green(byte opacity)
     {
         return Color.Color8(0, 255, 0, opacity);
     }
@@ -65,7 +73,7 @@ public static class shdr
     }
 
     [MethodImpl(INLINE)]
-    public static Color Mag(byte opacity)
+    public static Color Magenta(byte opacity)
     {
         return Color.Color8(255, 0, 255, opacity);
     }

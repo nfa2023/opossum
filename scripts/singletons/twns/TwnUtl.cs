@@ -2,52 +2,58 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-public enum TwnFunc : byte
+public enum EaseFunction : byte
 {
-    // EO   → Ease Out
-    // EI   → Ease In
-    // EIO  → Ease In/Out
+    QuadOut = 0,
+    QuadIn,
+    QuadInOut,
 
-    QUAD_EO = 0,
-    QUAD_EI,
-    QUAD_EIO,
-    CUBIC_EO,
-    CUBIC_EI,
-    CUBIC_EIO,
-    QUART_EO,
-    QUART_EI,
-    QUART_EIO,
-    QUINT_EO,
-    QUINT_EI,
-    QUINT_EIO,
+    CubicOut,
+    CubicIn,
+    CubicInOut,
 
-    POW_EO,
-    POW_EI,
-    POW_EIO,
-    CIRC_EO,
-    CIRC_EI,
-    CIRC_EIO,
-    BACK_EO,
-    BACK_EI,
-    BACK_EIO,
-    ELASTIC_EO,
-    ELASTIC_EI,
-    ELASTIC_EIO,
-    BOUNCE_EO,
-    BOUNCE_EI,
-    BOUNCE_EIO,
-    SIN_EO,
-    SIN_EI,
-    SIN_EIO,
+    QuartOut,
+    QuartIn,
+    QuartInOut,
 
-    BEZIER,
-    PULSE, // 1 → 0 → 1
-    ESLUP, // 0 → 1 → 0
-    LINEAR = 254,
+    QuintOut,
+    QuintIn,
+    QuintInOut,
+
+    PowOut,
+    PowIn,
+    PowInOut,
+
+    CircleOut,
+    CircleIn,
+    CircleInOut,
+
+    BackOut,
+    BackIn,
+    BackInOut,
+
+    ElasticOut,
+    ElasticIn,
+    ElasticInOut,
+
+    BounceOut,
+    BounceIn,
+    BounceInOut,
+
+    SinOut,
+    SinIn,
+    SinInOut,
+
+    SmoothStep,
+    SmootherStep,
+
+    Pulse, // 1 → 0 → 1
+    Eslup, // 0 → 1 → 0
+
+    Linear = 254,
+
     NULL = 255
 }
-
-public enum BOOL : byte { TRUE = 1, FALSE = 0 }
 
 public static class TwnUtl
 {
@@ -107,8 +113,8 @@ public static class TwnUtl
     public struct state // 4 bytes in size.
     {
         [FieldOffset(0)] public int full;
-        [FieldOffset(0)] public BOOL RUNNING;
-        [FieldOffset(1)] public TwnFunc EaseFunction;
+        [FieldOffset(0)] public bool RUNNING;
+        [FieldOffset(1)] public EaseFunction EaseFunction;
         [FieldOffset(2)] public ushort id;
     }
 }

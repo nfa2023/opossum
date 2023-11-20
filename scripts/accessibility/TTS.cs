@@ -7,24 +7,24 @@ namespace NFA.Accessibility
         public static bool usable = false;
         public static bool enabled;
         public static float rate;
-        public static string currVoiceId;
+        public static string currVoice;
         public static int volume;
 
         public static readonly string PROJ_OPT = "audio/general/text_to_speech";
-        public static int VOICE_CT;
+        public static int voiceCt;
         public static string[] VOICE_IDS;
         public static string[] VOICE_NAMES;
 
         public static string say;
 
-        public static void UpdateVolume()
+        public static void UpdateVol()
         {
             volume = (int)(mgt.snd.TTS * mgt.snd.MASTER * 100f);
         }
 
-        private static int ExtractName(in string id)
+        private static int NameIdx(in string id, int len)
         {
-            int i = id.Length - 1;
+            int i = len - 1;
             while (i > 0 && id[i - 1] != '\\')
             {
                 --i;
@@ -34,19 +34,21 @@ namespace NFA.Accessibility
 
         public static void FetchVoices(in string locale)
         {
-            if (ProjectSettings.GetSetting(PROJ_OPT).AsBool() == false)
+            bool ttsOptEnabled = ProjectSettings.GetSetting(PROJ_OPT).AsBool();
+            if (ttsOptEnabled == false)
             {
 #if DEBUG
                 GD.PrintErr("MUST HAVE TTS ENABLED IN PROJECT SETTINGS!");
 #endif
                 usable = false;
+                return;
             }
 
             VOICE_IDS = DisplayServer.TtsGetVoicesForLanguage(locale);
-            if (VOICE_IDS.Length < 1) { usable = false; }
+            if (VOICE_IDS.Length < 1) { usable = false; return; }
 
-            VOICE_CT = VOICE_IDS.Length;
-            VOICE_NAMES = new string[VOICE_CT];
+            voiceCt = VOICE_IDS.Length;
+            VOICE_NAMES = new string[voiceCt];
 
             const int maxStrLen = 128;
             char* voiceName = stackalloc char[maxStrLen];
@@ -55,10 +57,10 @@ namespace NFA.Accessibility
             int charIdx = 0;
             int idLen = 0;
 
-            for (int nameIdx = 0; nameIdx < VOICE_CT; ++nameIdx)
+            for (int nameIdx = 0; nameIdx < voiceCt; ++nameIdx)
             {
                 idLen = VOICE_IDS[nameIdx].Length;
-                startIdx = ExtractName(in VOICE_IDS[nameIdx]);
+                startIdx = NameIdx(in VOICE_IDS[nameIdx], idLen);
 
                 for (charIdx = 0; charIdx < maxStrLen && startIdx < idLen;)
                 {
@@ -74,13 +76,12 @@ namespace NFA.Accessibility
 
                 VOICE_NAMES[nameIdx] = new string(voiceName, 0, charIdx);
             }
-
             usable = true;
         }
 
-        public static void UpdateCurrVoiceId(int id)
+        public static void SetVoice(int id)
         {
-            currVoiceId = VOICE_IDS[id];
+            currVoice = VOICE_IDS[mth.Clamp(id, 0, voiceCt)];
         }
 
         public static void Pause()
@@ -98,7 +99,7 @@ namespace NFA.Accessibility
             if (usable == false || enabled == false || volume <= 0 ||
                 Str.Invalid(in say)) { return; }
 
-            DisplayServer.TtsSpeak(say, currVoiceId, volume, 1f, rate, 0, true);
+            DisplayServer.TtsSpeak(say, currVoice, volume, 1f, rate, 0, true);
         }
 
         public static void ForceSpeak(string s)
@@ -106,7 +107,7 @@ namespace NFA.Accessibility
             if (usable == false || enabled == false || volume <= 0 ||
                 Str.Invalid(in s)) { return; }
 
-            DisplayServer.TtsSpeak(s, currVoiceId, volume, 1f, rate, 0, true);
+            DisplayServer.TtsSpeak(s, currVoice, volume, 1f, rate, 0, true);
         }
 
         public static void Enable()
