@@ -99,8 +99,8 @@ public partial class SplashUi : Node
 	public override void _Ready()
 	{
 #if DEBUG
-        HideSplash();
-        return;
+        //HideSplash();
+        //return;
 #endif
 
 		transparency = Shdr.White(0);

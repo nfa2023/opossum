@@ -63,7 +63,7 @@ public partial class MenuUi : Node
     {
 #if DEBUG
 
-        if(TitleCard != null)  { TitleCard.QueueFree(); }
+        TitleCard?.QueueFree();
 
         mainMenu = false;
         canOpenMenu = true;

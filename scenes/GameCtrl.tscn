@@ -68,11 +68,15 @@ anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 script = ExtResource("6_l008w")
-MainMenu = NodePath("MenuOrganizer")
+MainMenu = NodePath("MenuOrganizer/MenuButtons")
 
 [node name="Title" parent="ui" instance=ExtResource("7_nv0q8")]
-layout_mode = 0
-anchors_preset = 0
+layout_mode = 1
+anchor_top = 0.0
+anchor_right = 0.993
+anchor_bottom = 0.502
+offset_right = -0.0400391
+grow_horizontal = 1
 
 [node name="MenuOrganizer" type="AspectRatioContainer" parent="ui"]
 custom_minimum_size = Vector2(16, 9)
@@ -2507,7 +2511,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Splash" type="Control" parent="ui" node_paths=PackedStringArray("BlackBckgrnd", "WhiteForgrnd", "NoFunAllowedLogo", "SubLogos")]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
